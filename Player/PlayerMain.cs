@@ -30,8 +30,8 @@ namespace Player
 				Console.WriteLine($">> Socket connected to {sender.RemoteEndPoint}");
 				while (true)
 				{
-					messenger.SendMessage(Console.ReadLine());
-					Console.WriteLine(messenger.ReceiveMessage());
+					messenger.SendPayload(Console.ReadLine());
+					Console.WriteLine(messenger.ReceivePayload());
 				}
 
 				// Release the socket.

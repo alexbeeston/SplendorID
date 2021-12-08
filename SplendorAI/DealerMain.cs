@@ -33,8 +33,8 @@ namespace SplendorAI
 				var messenger = new Messenger(handler);
 				while (true)
 				{
-					Console.WriteLine(messenger.ReceiveMessage());
-					messenger.SendMessage(Console.ReadLine());
+					Console.WriteLine(messenger.ReceivePayload());
+					messenger.SendPayload(Console.ReadLine());
 				}
 			}
 			catch (Exception e)
