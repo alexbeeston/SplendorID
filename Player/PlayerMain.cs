@@ -5,11 +5,10 @@ using System.Text;
 
 namespace Player
 {
-	class Program
+	class PlayerMain
 	{
 		static void Main(string[] args)
 		{
-			byte[] bytes = new byte[1024];
 
 			// Connect to a Remote server
 			// Get Host IP Address that is used to establish a connection
@@ -25,37 +24,26 @@ namespace Player
 			// Connect the socket to the remote endpoint. Catch any errors.
 			try
 			{
-				// Connect to Remote EndPoint
 				sender.Connect(remoteEP);
+				Console.WriteLine($">> Socket connected to {sender.RemoteEndPoint}");
+				while (true)
+				{
+					Console.WriteLine(">> Type your message to the server");
+					var userInput = Console.ReadLine();
+					sender.Send(Encoding.ASCII.GetBytes(userInput));
 
-				Console.WriteLine($"Socket connected to {sender.RemoteEndPoint}");
-
-				// Encode the data string into a byte array.
-				byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
-
-				// Send the data through the socket.
-				int bytesSent = sender.Send(msg);
-
-				// Receive the response from the remote device.
-				int bytesRec = sender.Receive(bytes);
-				Console.WriteLine($"Echoed test = {Encoding.ASCII.GetString(bytes, 0, bytesRec)}");
+					byte[] bytes = new byte[1024];
+					int numReceivedBytes = sender.Receive(bytes);
+					Console.WriteLine($">> Server says \n{Encoding.ASCII.GetString(bytes, 0, numReceivedBytes)}");
+				}
 
 				// Release the socket.
 				sender.Shutdown(SocketShutdown.Both);
 				sender.Close();
-
-			}
-			catch (ArgumentNullException e)
-			{
-				Console.WriteLine($"ArgumentNullException : {e}");
-			}
-			catch (SocketException e)
-			{
-				Console.WriteLine($"SocketException : {e}");
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine($"Unexpected exception : {e}");
+				Console.WriteLine(e);
 			}
 		}
 	}

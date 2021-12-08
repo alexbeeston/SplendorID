@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SplendorAI
 {
-	class Program
+	class DealerMain
 	{
 		static void Main(string[] args)
 		{
@@ -19,43 +19,31 @@ namespace SplendorAI
 
 			try
 			{
-
-				// Create a Socket that will use Tcp protocol
 				Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-				// A Socket must be associated with an endpoint using the Bind method
 				listener.Bind(localEndPoint);
 
 				const int MAX_REQUESTS = 10;
 				listener.Listen(MAX_REQUESTS);
 
-				Console.WriteLine("Waiting for a connection...");
+				Console.WriteLine(">> Waiting for a connection...");
 				Socket handler = listener.Accept();
+				Console.WriteLine(">> Accepted a connection");
 
 				// Incoming data from the client.
-				string data = null;
-				byte[] bytes = null;
-
 				while (true)
 				{
-					bytes = new byte[1024];
-					int bytesRec = handler.Receive(bytes);
-					data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
-					if (data.IndexOf("<EOF>") > -1)
-					{
-						break;
-					}
+					byte[] bytes = new byte[1024];
+					int numReceivedBytes = handler.Receive(bytes);
+					Console.WriteLine($">> Client says \n{Encoding.ASCII.GetString(bytes, 0, numReceivedBytes)}");
+
+					Console.WriteLine(">> Type your message to the client");
+					var userInput = Console.ReadLine();
+					handler.Send(Encoding.ASCII.GetBytes(userInput));
 				}
-
-				Console.WriteLine($"Text received : {data}");
-
-				byte[] msg = Encoding.ASCII.GetBytes(data);
-				handler.Send(msg);
-				handler.Shutdown(SocketShutdown.Both);
-				handler.Close();
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e.ToString());
+				Console.WriteLine(e);
 			}
 
 			Console.WriteLine("\n Press any key to continue...");
