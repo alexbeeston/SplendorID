@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dealer", "SplendorAI\Dealer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Player", "Player\Player.csproj", "{D3C05A67-EB70-4211-9F4D-688E26B37F05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Global", "Global\Global.csproj", "{D7B212C4-C250-48AD-9A7F-0523BA45E247}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D3C05A67-EB70-4211-9F4D-688E26B37F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3C05A67-EB70-4211-9F4D-688E26B37F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3C05A67-EB70-4211-9F4D-688E26B37F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7B212C4-C250-48AD-9A7F-0523BA45E247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7B212C4-C250-48AD-9A7F-0523BA45E247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7B212C4-C250-48AD-9A7F-0523BA45E247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7B212C4-C250-48AD-9A7F-0523BA45E247}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

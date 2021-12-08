@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
+using Global;
+
 namespace SplendorAI
 {
 	class DealerMain
@@ -27,18 +29,12 @@ namespace SplendorAI
 
 				Console.WriteLine(">> Waiting for a connection...");
 				Socket handler = listener.Accept();
-				Console.WriteLine(">> Accepted a connection");
 
-				// Incoming data from the client.
+				var messenger = new Messenger(handler);
 				while (true)
 				{
-					byte[] bytes = new byte[1024];
-					int numReceivedBytes = handler.Receive(bytes);
-					Console.WriteLine($">> Client says \n{Encoding.ASCII.GetString(bytes, 0, numReceivedBytes)}");
-
-					Console.WriteLine(">> Type your message to the client");
-					var userInput = Console.ReadLine();
-					handler.Send(Encoding.ASCII.GetBytes(userInput));
+					Console.WriteLine(messenger.ReceiveMessage());
+					messenger.SendMessage(Console.ReadLine());
 				}
 			}
 			catch (Exception e)
