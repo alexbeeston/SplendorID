@@ -27,7 +27,6 @@ namespace Player
 			{
 				sender.Connect(remoteEP);
 				var messenger = new Messenger(sender);
-				Console.WriteLine($">> Socket connected to {sender.RemoteEndPoint}");
 				while (true)
 				{
 					messenger.SendPayload(Console.ReadLine());
