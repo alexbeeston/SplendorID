@@ -9,8 +9,9 @@ namespace Dealer
 {
 	static class ClientHandler
 	{
-		public static void HandleClient(Socket socket)
+		public static void HandleClient(object socketAsObject)
 		{
+			var socket = (Socket)socketAsObject;
 			var messenger = new Messenger(socket);
 			while (true)
 			{
