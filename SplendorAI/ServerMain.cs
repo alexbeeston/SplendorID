@@ -6,7 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Global;
 
-namespace Dealer
+using Server.DataProviders;
+using Server.Types;
+
+namespace Server
 {
 	class ServerMain
 	{
@@ -18,11 +21,17 @@ namespace Dealer
 			listener.Bind(new IPEndPoint(ipAddress, 11000));
 			const int MAX_REQUESTS = 10;
 			listener.Listen(MAX_REQUESTS);
+			IDataProvider dataProvider = new InMemoryDataProvider();
 
 			while (true)
 			{
-				Socket handler = listener.Accept();
-				ThreadPool.QueueUserWorkItem(ClientHandler.HandleClient, handler);
+				Socket socket = listener.Accept();
+				var clientParameters = new ClientHandlerParameters
+				{
+					Socket = socket,
+					DataProvider = dataProvider
+				};
+				ThreadPool.QueueUserWorkItem(ClientHandler.HandleClient, clientParameters);
 			}
 		}
 	}

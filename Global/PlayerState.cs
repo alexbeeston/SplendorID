@@ -6,6 +6,11 @@ namespace Global
 {
 	public class PlayerState
 	{
+		public PlayerState(string authToken)
+		{
+			AuthToken = authToken;
+		}
+
 		public List<string> ClaimedMines { get; set; }
 		public List<string> ClaimedNobles { get; set; }
 		public List<string> ReservedCards { get; set; }
@@ -15,6 +20,6 @@ namespace Global
 		public int Rubies { get; set; }
 		public int Saphire { get; set; }
 		public int Wild { get; set; }
-		public string PlayerId { get; set; }
+		public string AuthToken { get; set; }
 	}
 }

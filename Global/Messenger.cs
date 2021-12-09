@@ -3,18 +3,22 @@ using System.Net.Http;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
+
+using Newtonsoft.Json;
+
+using Global.Messaging;
+
 
 namespace Global
 {
+	public delegate void SocketHandler(string socketInput);
+
+	/// <summary>
+	/// A helper class for communicating over a socket
+	/// </summary>
 	public class Messenger
 	{
-		private Socket Socket { get; set; }
-		private int BytesAvailableForPayload { get { return InternalBufferSize - BytesRequiredForHeaders; } }
-
-		private readonly Encoding Encoding;
-		private readonly int InternalBufferSize;
-		private readonly int BytesRequiredForHeaders;
-
 		public Messenger(Socket socket)
 		{
 			Socket = socket;
@@ -23,9 +27,9 @@ namespace Global
 			Encoding = Encoding.UTF8;
 		}
 
-		public void SendPayload(string payload)
+		public void SendPayload(Message payload)
 		{
-			byte[] encodedPayload = Encoding.GetBytes(payload);
+			byte[] encodedPayload = Encoding.GetBytes(JsonConvert.SerializeObject(payload));
 			int indexOfNextWrite = 0;
 			do
 			{
@@ -37,7 +41,7 @@ namespace Global
 			while (indexOfNextWrite < encodedPayload.Length);
 		}
 
-		public string ReceivePayload()
+		public Message ReceivePayload()
 		{
 			var stringBuilder = new StringBuilder();
 			byte[] buffer = new byte[InternalBufferSize];
@@ -48,8 +52,14 @@ namespace Global
 				stringBuilder.Append(payload);
 			} while (buffer[0] == 1);
 
-			return stringBuilder.ToString();
+			return JsonConvert.DeserializeObject<Message>(stringBuilder.ToString());
 		}
+
+		private Socket Socket { get; set; }
+		private int BytesAvailableForPayload { get { return InternalBufferSize - BytesRequiredForHeaders; } }
+		private readonly Encoding Encoding;
+		private readonly int InternalBufferSize;
+		private readonly int BytesRequiredForHeaders;
 
 		private void WriteHeaders(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
 		{
@@ -77,6 +87,7 @@ namespace Global
  * 
  * ## Headers
  * index 0: readAgain (1 for read another packet, 0 for this was the last packet)
+ * index 1: eventCode (???)
  */
 
 
