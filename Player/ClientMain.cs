@@ -9,11 +9,17 @@ using Newtonsoft.Json;
 
 using Global;
 using Global.Messaging;
+using Global.Messaging.Client;
+using Global.Messaging.Server;
+
 
 namespace Player
 {
 	class ClientMain
 	{
+		private static string ClientId { get; set;}
+		private static string AuthorizationKey { get; set; }
+
 		static void Main(string[] args)
 		{
 			IPHostEntry host = Dns.GetHostEntry("localhost");
@@ -33,19 +39,21 @@ namespace Player
 		{
 			switch (message.EventCode)
 			{
-				case EventCode.EstalishAuthToken:
-					EstablishAuthToken(message);
+				case EventCode.NewClientCreated:
+					HandleNewClientCreated(message);
 					break;
 				default:
-					Console.WriteLine("Not sure what that message was");
+					Console.WriteLine("EventCode not recognized");
 					break;
 			}
 		}
 
-		private static void EstablishAuthToken(Message message)
+		private static void HandleNewClientCreated(Message message)
 		{
-			var payload = JsonConvert.DeserializeObject<EstalishAuthToken>(message.SerializedPayload);
-			Console.WriteLine($"The server gave us the auth token of {payload.AuthToken}");
+			var payload = JsonConvert.DeserializeObject<NewClientCreated>(message.SerializedPayload);
+			ClientId = payload.ClientId;
+			AuthorizationKey = payload.AuthorizationKey;
+			Console.WriteLine($"ClientId: {ClientId}\nAuthorization Key: {AuthorizationKey}");
 		}
 	}
 }

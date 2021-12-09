@@ -87,7 +87,6 @@ namespace Global
  * 
  * ## Headers
  * index 0: readAgain (1 for read another packet, 0 for this was the last packet)
- * index 1: eventCode (???)
  */
 
 

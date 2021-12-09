@@ -2,6 +2,8 @@
 {
 	public enum EventCode
 	{
-		EstalishAuthToken
+		NewClientCreated,
+		SendClientState,
+		RequestClientState,
 	}
 }

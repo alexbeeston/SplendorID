@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Global.Messaging
 {
-	public class EstalishAuthToken
+	public abstract class BasePayload
 	{
-		public string AuthToken { get; set; }
 	}
 }

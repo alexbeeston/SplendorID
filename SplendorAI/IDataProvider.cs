@@ -9,10 +9,10 @@ namespace Server
 	interface IDataProvider
 	{
 		/// <summary>
-		/// Creates a new player and returns the auth token of the newly created player
+		/// Creates a new client
 		/// </summary>
-		/// <returns></returns>
-		public string AddNewPlayer();
-		public PlayerState GetPlayerState(string authToken);
+		/// <returns>The tuple (clientId, authorizationKey)</returns>
+		public (string, string) AddNewClient();
+		public ClientState GetPlayerState(string authToken);
 	}
 }

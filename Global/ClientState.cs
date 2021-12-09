@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Global
 {
-	public class PlayerState
+	public class ClientState
 	{
-		public PlayerState(string authToken)
+		public ClientState(string clientId)
 		{
-			AuthToken = authToken;
+			ClientId = clientId;
 		}
 
 		public List<string> ClaimedMines { get; set; }
@@ -20,6 +20,7 @@ namespace Global
 		public int Rubies { get; set; }
 		public int Saphire { get; set; }
 		public int Wild { get; set; }
-		public string AuthToken { get; set; }
+		public string ClientId { get; set; }
+		public string UserName { get; set; }
 	}
 }

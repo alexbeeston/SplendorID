@@ -8,23 +8,28 @@ namespace Server.DataProviders
 {
 	public class InMemoryDataProvider : IDataProvider
 	{
-		private readonly List<PlayerState> Players;
+		private readonly List<ClientState> Clients;
+		private readonly Dictionary<string, string> AuthorizationMappings;
 
-		public string AddNewPlayer()
+		public (string, string) AddNewClient()
 		{
-			var authToken = Guid.NewGuid().ToString();
-			Players.Add(new PlayerState(authToken));
-			return authToken;
+			var clientId = Guid.NewGuid().ToString();
+			var authorizationKey = Guid.NewGuid().ToString();
+			Clients.Add(new ClientState(clientId));
+			AuthorizationMappings.Add(clientId, authorizationKey);
+
+			return (clientId, authorizationKey);
 		}
 
-		public PlayerState GetPlayerState(string authToken)
+		public ClientState GetPlayerState(string authToken)
 		{
-			return Players.Find(x => x.AuthToken == authToken);
+			return Clients.Find(x => x.ClientId == authToken);
 		}
 
 		public InMemoryDataProvider()
 		{
-			Players = new List<PlayerState>();
+			Clients = new List<ClientState>();
+			AuthorizationMappings = new Dictionary<string, string>();
 		}
 	}
 }

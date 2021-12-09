@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 
 using Global;
 using Global.Messaging;
+using Global.Messaging.Server;
 using Server.Types;
 
 namespace Server
@@ -14,46 +15,35 @@ namespace Server
 		{
 			var parameters = (ClientHandlerParameters)parametersAsObject;
 			var dataProvider = parameters.DataProvider;
-
 			var messenger = new Messenger(parameters.Socket);
 
-			string authToken = dataProvider.AddNewPlayer();
-			var payload = new EstalishAuthToken
+			// Create Client
+			(string clientId, string authorizationKey) = dataProvider.AddNewClient();
+			var payload = new NewClientCreated
 			{
-				AuthToken = authToken
+				AuthorizationKey = authorizationKey,
+				ClientId = clientId,
 			};
-			var message = new Message
-			{
-				AuthToken = string.Empty,
-				EventCode = EventCode.EstalishAuthToken,
-				RequestId = string.Empty,
-				SerializedPayload = JsonConvert.SerializeObject(payload)
-			};
+			var message = new Message(clientId, EventCode.NewClientCreated, JsonConvert.SerializeObject(payload));
 			messenger.SendPayload(message);
 
 			while (true)
 			{
 				HandleSocketInput(messenger.ReceivePayload());
 			}
-			// TODO: close socket
 		}
 
 		private static void HandleSocketInput(Message socketInput)
 		{
 			switch (socketInput.EventCode)
 			{
-				case EventCode.EstalishAuthToken:
+				case EventCode.NewClientCreated:
 					Console.WriteLine("They want to ");
 					break;
 				default:
 					Console.WriteLine($"They want to do something else. They said {socketInput}");
 					break;
 			}
-			// respond to request for game state
-			// respond to request for player state validation
-			// respond to inquiry on game state
-			// respond to answer to whether to start new game
-			// respond to request for turn submission
 		}
 	}
 }
