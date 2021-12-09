@@ -15,9 +15,9 @@ namespace Player
 			IPAddress ipAddress = host.AddressList[0];
 			IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
 			Socket sender = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
 			sender.Connect(remoteEP);
 			var messenger = new Messenger(sender);
+
 			while (true)
 			{
 				messenger.SendPayload(Console.ReadLine());

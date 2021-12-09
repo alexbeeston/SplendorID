@@ -13,6 +13,7 @@ namespace Dealer
 		{
 			var socket = (Socket)socketAsObject;
 			var messenger = new Messenger(socket);
+
 			while (true)
 			{
 				Console.WriteLine(messenger.ReceivePayload());

@@ -8,7 +8,7 @@ using Global;
 
 namespace Dealer
 {
-	class DealerMain
+	class ServerMain
 	{
 		static void Main(string[] args)
 		{
