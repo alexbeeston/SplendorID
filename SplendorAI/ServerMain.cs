@@ -26,12 +26,11 @@ namespace Server
 			while (true)
 			{
 				Socket socket = listener.Accept();
-				var clientParameters = new ClientHandlerParameters
+				Task.Run(() => // TODO: limit the number of requests that the server can concurrently handle
 				{
-					Socket = socket,
-					DataProvider = dataProvider
-				};
-				ThreadPool.QueueUserWorkItem(ClientHandler.HandleClient, clientParameters);
+					var clientHandler = new ClientHandler(new Messenger(socket), dataProvider);
+					clientHandler.Run();
+				});
 			}
 		}
 	}

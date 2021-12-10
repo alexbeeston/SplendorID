@@ -9,25 +9,26 @@ using Server.Types;
 
 namespace Server
 {
-	// Can I make this non-static so that I have instance-access to the dataProvider and the socket?
-	static class ClientHandler
+	class ClientHandler
 	{
-		private static Messenger Messenger { get; set; }
-		private static IDataProvider DataProvider { get; set; }
+		private Messenger Messenger { get; set; }
+		private IDataProvider DataProvider { get; set; }
 
-		public static void HandleClient(object parametersAsObject) // will be the constructor
+		public ClientHandler(Messenger messenger, IDataProvider dataProvider)
 		{
-			var parameters = (ClientHandlerParameters)parametersAsObject;
-			DataProvider = parameters.DataProvider;
-			Messenger = new Messenger(parameters.Socket);
+			Messenger = messenger;
+			DataProvider = dataProvider;
+		}
 
+		public void Run()
+		{
 			while (true)
 			{
 				HandleSocketInput(Messenger.ReceiveMessage());
 			}
 		}
 
-		private static void HandleSocketInput(Message message)
+		private void HandleSocketInput(Message message)
 		{
 			switch (message.EventCode)
 			{
@@ -40,7 +41,7 @@ namespace Server
 			}
 		}
 
-		private static void CreateNewClient() // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
+		private void CreateNewClient() // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
 		{
 			(string clientId, string authorizationKey) = DataProvider.AddNewClient();
 			var payload = new CreateNewClientResponse
