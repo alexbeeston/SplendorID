@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Global;
 
 using Server.DataProviders;
-using Server.Types;
 
 namespace Server
 {

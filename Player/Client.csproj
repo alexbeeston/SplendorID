@@ -9,8 +9,4 @@
     <ProjectReference Include="..\Global\Global.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Players\" />
-  </ItemGroup>
-
 </Project>
