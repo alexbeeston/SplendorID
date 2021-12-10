@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "SplendorAI\Server.csproj", "{928E47A3-81DE-469A-B83F-7A1DCB7F6640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{928E47A3-81DE-469A-B83F-7A1DCB7F6640}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Player\Client.csproj", "{D3C05A67-EB70-4211-9F4D-688E26B37F05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{D3C05A67-EB70-4211-9F4D-688E26B37F05}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global", "Global\Global.csproj", "{D7B212C4-C250-48AD-9A7F-0523BA45E247}"
 EndProject
