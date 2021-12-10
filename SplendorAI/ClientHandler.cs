@@ -4,46 +4,51 @@ using Newtonsoft.Json;
 
 using Global;
 using Global.Messaging;
-using Global.Messaging.Server;
+using Global.Messaging.Messages;
 using Server.Types;
 
 namespace Server
 {
+	// Can I make this non-static so that I have instance-access to the dataProvider and the socket?
 	static class ClientHandler
 	{
-		public static void HandleClient(object parametersAsObject)
+		private static Messenger Messenger { get; set; }
+		private static IDataProvider DataProvider { get; set; }
+
+		public static void HandleClient(object parametersAsObject) // will be the constructor
 		{
 			var parameters = (ClientHandlerParameters)parametersAsObject;
-			var dataProvider = parameters.DataProvider;
-			var messenger = new Messenger(parameters.Socket);
+			DataProvider = parameters.DataProvider;
+			Messenger = new Messenger(parameters.Socket);
 
-			// Create Client
-			(string clientId, string authorizationKey) = dataProvider.AddNewClient();
-			var payload = new NewClientCreated
+			while (true)
+			{
+				HandleSocketInput(Messenger.ReceiveMessage());
+			}
+		}
+
+		private static void HandleSocketInput(Message message)
+		{
+			switch (message.EventCode)
+			{
+				case nameof(CreateNewClientRequest):
+					CreateNewClient();
+					break;
+				default:
+					Console.WriteLine($"Event code not recognized: {message.EventCode}");
+					break;
+			}
+		}
+
+		private static void CreateNewClient() // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
+		{
+			(string clientId, string authorizationKey) = DataProvider.AddNewClient();
+			var payload = new CreateNewClientResponse
 			{
 				AuthorizationKey = authorizationKey,
 				ClientId = clientId,
 			};
-			var message = new Message(clientId, EventCode.NewClientCreated, JsonConvert.SerializeObject(payload));
-			messenger.SendPayload(message);
-
-			while (true)
-			{
-				HandleSocketInput(messenger.ReceivePayload());
-			}
-		}
-
-		private static void HandleSocketInput(Message socketInput)
-		{
-			switch (socketInput.EventCode)
-			{
-				case EventCode.NewClientCreated:
-					Console.WriteLine("They want to ");
-					break;
-				default:
-					Console.WriteLine($"They want to do something else. They said {socketInput}");
-					break;
-			}
+			Messenger.SendMessage(Message.CreateMessage(clientId, payload));
 		}
 	}
 }

@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Newtonsoft.Json;
+
 namespace Global.Messaging
 {
 	public class Message
 	{
 		public string ClientId { get; set; }
-		public EventCode EventCode { get; set; }
-		public string SerializedPayload { get; set; } // TODO: replace with base payload, and then serilize (? works for sending, how about receiving?)
+		public string EventCode { get; set; }
+		public string SerializedPayload { get; set; }
 
-		public Message(string clientId, EventCode eventCode, string serializedPayload)
+		public static Message CreateMessage(string clientId, BasePayload payload)
 		{
-			ClientId = clientId;
-			EventCode = eventCode;
-			SerializedPayload = serializedPayload;
+			return new Message
+			{
+				ClientId = clientId,
+				EventCode = payload.GetType().Name,
+				SerializedPayload = JsonConvert.SerializeObject(payload),
+			};
 		}
 	}
 }

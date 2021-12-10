@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Global.Messaging.Client
+namespace Global.Messaging.Messages
 {
-	public class RequestClientState : BasePayload
+	public class ClientStateRequest : BasePayload
 	{
 		public string ClientId { get; set; }
 	}

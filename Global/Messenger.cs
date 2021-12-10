@@ -27,9 +27,9 @@ namespace Global
 			Encoding = Encoding.UTF8;
 		}
 
-		public void SendPayload(Message payload)
+		public void SendMessage(Message message)
 		{
-			byte[] encodedPayload = Encoding.GetBytes(JsonConvert.SerializeObject(payload));
+			byte[] encodedPayload = Encoding.GetBytes(JsonConvert.SerializeObject(message));
 			int indexOfNextWrite = 0;
 			do
 			{
@@ -41,15 +41,15 @@ namespace Global
 			while (indexOfNextWrite < encodedPayload.Length);
 		}
 
-		public Message ReceivePayload()
+		public Message ReceiveMessage()
 		{
 			var stringBuilder = new StringBuilder();
 			byte[] buffer = new byte[InternalBufferSize];
 			do
 			{
 				int numReceivedBytes = Socket.Receive(buffer);
-				string payload = Encoding.GetString(buffer, BytesRequiredForHeaders, numReceivedBytes - BytesRequiredForHeaders);
-				stringBuilder.Append(payload);
+				string message = Encoding.GetString(buffer, BytesRequiredForHeaders, numReceivedBytes - BytesRequiredForHeaders);
+				stringBuilder.Append(message);
 			} while (buffer[0] == 1);
 
 			return JsonConvert.DeserializeObject<Message>(stringBuilder.ToString());

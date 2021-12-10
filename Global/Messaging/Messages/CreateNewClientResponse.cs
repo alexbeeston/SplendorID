@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Global.Messaging.Server
+namespace Global.Messaging.Messages
 {
-	public class NewClientCreated : BasePayload
+	public class CreateNewClientResponse : BasePayload
 	{
 		public string ClientId { get; set; }
 		public string AuthorizationKey { get; set; }

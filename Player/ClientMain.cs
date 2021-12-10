@@ -9,15 +9,17 @@ using Newtonsoft.Json;
 
 using Global;
 using Global.Messaging;
-using Global.Messaging.Client;
-using Global.Messaging.Server;
+using Global.Messaging.Messages;
 
 
 namespace Player
 {
 	class ClientMain
 	{
-		private static string ClientId { get; set;}
+		// Can I make this non-static so that the ClientId and AuthorizationKey are instance-data?
+		// Make several different clients that implement an interface?
+
+		private static string ClientId { get; set; }
 		private static string AuthorizationKey { get; set; }
 
 		static void Main(string[] args)
@@ -29,28 +31,35 @@ namespace Player
 			sender.Connect(remoteEP);
 			var messenger = new Messenger(sender);
 
-			while (true)
+			var listenerTask = Task.Run(() =>
 			{
-				HandleSocketInput(messenger.ReceivePayload());
-			}
+				while (true)
+				{
+					HandleSocketInput(messenger.ReceiveMessage());
+				}
+			});
+
+			var payload = new CreateNewClientRequest();
+			messenger.SendMessage(Message.CreateMessage(string.Empty, payload));
+			Task.WaitAll(new Task[] { listenerTask });
 		}
 
 		private static void HandleSocketInput(Message message)
 		{
 			switch (message.EventCode)
 			{
-				case EventCode.NewClientCreated:
+				case nameof(CreateNewClientResponse):
 					HandleNewClientCreated(message);
 					break;
 				default:
-					Console.WriteLine("EventCode not recognized");
+					Console.WriteLine("Event code not recognized");
 					break;
 			}
 		}
 
 		private static void HandleNewClientCreated(Message message)
 		{
-			var payload = JsonConvert.DeserializeObject<NewClientCreated>(message.SerializedPayload);
+			var payload = JsonConvert.DeserializeObject<CreateNewClientResponse>(message.SerializedPayload);
 			ClientId = payload.ClientId;
 			AuthorizationKey = payload.AuthorizationKey;
 			Console.WriteLine($"ClientId: {ClientId}\nAuthorization Key: {AuthorizationKey}");
