@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Global.Messaging.Messages
 {
-	public class CreateNewClientRequest : BasePayload
+	public class RegisterNewClientRequest : BasePayload
 	{
 	}
 }

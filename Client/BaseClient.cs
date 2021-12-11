@@ -23,8 +23,9 @@ namespace Client
 		public void Run()
 		{
 			EstablishMessengerConnection();
+			GreetClient();
 			EstablishListener();
-			RegisterClientOnServer();
+			RegisterClientOnServer(GetUserName());
 			Listener.Wait();
 		}
 
@@ -53,7 +54,7 @@ namespace Client
 		{
 			switch (message.EventCode)
 			{
-				case nameof(CreateNewClientResponse):
+				case nameof(RegisterNewClientResponse):
 					HandleNewClientCreated(message);
 					break;
 				default:
@@ -62,7 +63,22 @@ namespace Client
 			}
 		}
 
-		protected abstract void RegisterClientOnServer();
-		protected abstract void HandleNewClientCreated(Message message);
+		protected void RegisterClientOnServer(string userName)
+		{
+			// TODO: add userName to CreateNewClient - change name to register client
+			var payload = new RegisterNewClientRequest();
+			Messenger.SendMessage(Message.CreateMessage(string.Empty, payload));
+		}
+
+		protected void HandleNewClientCreated(Message message)
+		{
+			var payload = JsonConvert.DeserializeObject<RegisterNewClientResponse>(message.SerializedPayload);
+			ClientId = payload.ClientId;
+			AuthorizationKey = payload.AuthorizationKey;
+			Console.WriteLine($"ClientId: {ClientId}\nAuthorizationKey: {AuthorizationKey}\n");
+		}
+
+		protected abstract void GreetClient();
+		protected abstract string GetUserName();
 	}
 }

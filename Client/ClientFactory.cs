@@ -6,8 +6,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-using Client.Clients;
-
 namespace Client
 {
 	class ClientFactory
@@ -20,8 +18,8 @@ namespace Client
 				case "h":
 					client = new HumanClient();
 					break;
-				case "r":
-					client = new RandomClient();
+				case "b":
+					client = new BotClient();
 					break;
 				default:
 					throw new Exception("selection does not map to a type of client");

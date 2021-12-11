@@ -29,8 +29,8 @@ namespace Server
 		{
 			switch (message.EventCode)
 			{
-				case nameof(CreateNewClientRequest):
-					CreateNewClient();
+				case nameof(RegisterNewClientRequest):
+					RegisterNewClient();
 					break;
 				default:
 					Console.WriteLine($"Event code not recognized: {message.EventCode}");
@@ -38,10 +38,10 @@ namespace Server
 			}
 		}
 
-		private void CreateNewClient() // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
+		private void RegisterNewClient() // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
 		{
 			(string clientId, string authorizationKey) = DataProvider.AddNewClient();
-			var payload = new CreateNewClientResponse
+			var payload = new RegisterNewClientResponse
 			{
 				AuthorizationKey = authorizationKey,
 				ClientId = clientId,
