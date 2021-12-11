@@ -11,32 +11,42 @@ using Global;
 using Global.Messaging;
 using Global.Messaging.Messages;
 
-namespace Client.Players
+namespace Client
 {
-	abstract class BasePlayer
+	abstract class BaseClient
 	{
 		protected string ClientId { get; set; }
 		protected string AuthorizationKey { get; set; }
 		protected Messenger Messenger { get; set; }
+		private Task Listener { get; set; }
 
 		public void Run()
+		{
+			EstablishMessengerConnection();
+			EstablishListener();
+			RegisterClientOnServer();
+			Listener.Wait();
+		}
+
+		private void EstablishMessengerConnection()
 		{
 			IPHostEntry host = Dns.GetHostEntry("localhost");
 			IPAddress ipAddress = host.AddressList[0];
 			IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
-			Socket sender = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-			sender.Connect(remoteEP);
-			Messenger = new Messenger(sender);
+			Socket socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+			socket.Connect(remoteEP);
+			Messenger = new Messenger(socket);
+		}
 
-			var listenerTask = Task.Run(() =>
+		private void EstablishListener()
+		{
+			Listener = Task.Run(() =>
 			{
 				while (true)
 				{
 					Dispatcher(Messenger.ReceiveMessage());
 				}
 			});
-			CreateNewClient();
-			Task.WaitAll(new Task[] { listenerTask });
 		}
 
 		protected void Dispatcher(Message message)
@@ -52,7 +62,7 @@ namespace Client.Players
 			}
 		}
 
-		protected abstract void CreateNewClient();
+		protected abstract void RegisterClientOnServer();
 		protected abstract void HandleNewClientCreated(Message message);
 	}
 }

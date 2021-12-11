@@ -8,11 +8,11 @@ using Global;
 using Global.Messaging;
 using Global.Messaging.Messages;
 
-namespace Client.Players
+namespace Client.Clients
 {
-	class HumanPlayer : BasePlayer
+	class RandomClient : BaseClient
 	{
-		protected override void CreateNewClient()
+		protected override void RegisterClientOnServer()
 		{
 			var payload = new CreateNewClientRequest();
 			Messenger.SendMessage(Message.CreateMessage(string.Empty, payload));
@@ -23,7 +23,7 @@ namespace Client.Players
 			var payload = JsonConvert.DeserializeObject<CreateNewClientResponse>(message.SerializedPayload);
 			ClientId = payload.ClientId;
 			AuthorizationKey = payload.AuthorizationKey;
-			Console.WriteLine($"Human Player got\n  ClientId: {ClientId}\n  Authorization Key: {AuthorizationKey}");
+			Console.WriteLine($"Random player got\n  ClientId: {ClientId}\n  Authorization Key: {AuthorizationKey}");
 		}
 	}
 }
