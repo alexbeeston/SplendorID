@@ -50,17 +50,17 @@ namespace Client
 			{
 				while (true)
 				{
-					Dispatcher(Messenger.ReceiveMessage());
+					DispatchMessage(Messenger.ReceiveMessage());
 				}
 			});
 		}
 
-		protected void Dispatcher(Message message)
+		protected void DispatchMessage(Message message)
 		{
 			switch (message.EventCode)
 			{
 				case nameof(RegisterNewClientResponse):
-					HandleRegisterClient(message);
+					AcceptClientRegistration(message);
 					break;
 				default:
 					Console.WriteLine("Event code not recognized");
@@ -77,7 +77,9 @@ namespace Client
 			Messenger.SendMessage(Message.CreateMessage(string.Empty, payload));
 		}
 
-		protected void HandleRegisterClient(Message message)
+
+		// Event Handlers
+		protected void AcceptClientRegistration(Message message)
 		{
 			var payload = JsonConvert.DeserializeObject<RegisterNewClientResponse>(message.SerializedPayload);
 			if (payload.Success)
@@ -85,7 +87,7 @@ namespace Client
 				State.ClientId = payload.ClientId;
 				State.UserName = payload.UserName;
 				AuthorizationKey = payload.AuthorizationKey;
-				Console.WriteLine($"Successfully registered on the user with the user name {State.UserName}");
+				Console.WriteLine($"Successfully registered on the server with the user name {State.UserName}");
 			}
 			else
 			{
@@ -93,12 +95,8 @@ namespace Client
 			}
 		}
 
-		protected void HandleError(string error, ErrorCode code)
-		{
-			Console.WriteLine(error);
-		}
-
-		protected abstract void HandleServerError(ErrorCode code);
+		// Concrete Methods
+		protected abstract void HandleServerError(ErrorCode code); // might have a lot of duplicate code (?)
 		protected abstract void GreetClient();
 		protected abstract string GetUserName();
 	}
