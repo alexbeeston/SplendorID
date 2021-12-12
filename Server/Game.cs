@@ -6,11 +6,12 @@ using Global;
 
 namespace Server
 {
-	public class GameState
+	public class Game
 	{
-		public GameState(string gameId)
+		public Game(string gameId)
 		{
 			GameId = gameId;
+			ClientIds = new List<string>();
 		}
 
 		public string GameId { get; set; }

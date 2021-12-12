@@ -39,6 +39,9 @@ namespace Server
 				case nameof(CreateGameRequest):
 					HandleCreateGameRequest(message);
 					break;
+				case nameof(JoinGameRequest):
+					HandleJoinGameRequest(message);
+					break;
 				default:
 					Console.WriteLine($"Event code not recognized: {message.EventCode}");
 					break;
@@ -80,6 +83,19 @@ namespace Server
 			var response = new CreateGameResponse
 			{
 				GameId = gameId
+			};
+			Messenger.SendMessage(message.ClientId, response);
+		}
+
+		private void HandleJoinGameRequest(Message message)
+		{
+			// TODO: verify user is registered
+			// TODO: verify that the user is not currently in a game/can be added to a game
+			var requestPayload = JsonConvert.DeserializeObject<JoinGameRequest>(message.SerializedPayload);
+			DataProvider.AddClientToGame(requestPayload.GameId, message.ClientId);
+			var response = new JoinGameResponse
+			{
+				GameId = requestPayload.GameId
 			};
 			Messenger.SendMessage(message.ClientId, response);
 		}

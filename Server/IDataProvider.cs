@@ -15,5 +15,6 @@ namespace Server
 		public (string, string) AddNewClient(string userName);
 		public ClientState GetPlayerState(string authToken);
 		public string CreateGame();
+		public void AddClientToGame(string gameId, string clientId);
 	}
 }

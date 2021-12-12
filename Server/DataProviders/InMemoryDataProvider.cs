@@ -11,13 +11,13 @@ namespace Server.DataProviders
 	{
 		private readonly List<ClientState> Clients;
 		private readonly Dictionary<string, string> AuthorizationMappings;
-		private readonly List<GameState> Games;
+		private readonly List<Game> Games;
 
 		public InMemoryDataProvider()
 		{
 			Clients = new List<ClientState>();
 			AuthorizationMappings = new Dictionary<string, string>();
-			Games = new List<GameState>();
+			Games = new List<Game>();
 		}
 
 		public (string, string) AddNewClient(string userName)
@@ -35,7 +35,7 @@ namespace Server.DataProviders
 				Clients.Add(new ClientState(clientId, userName));
 			}
 			AuthorizationMappings.Add(clientId, authorizationKey);
-			Console.WriteLine($"Created user {userName}\n  id - {clientId}\n  auth key: {authorizationKey}");
+			Console.WriteLine($"Created user {userName}\n  id: {clientId}\n  auth key: {authorizationKey}");
 			return (clientId, authorizationKey);
 		}
 
@@ -51,8 +51,22 @@ namespace Server.DataProviders
 		{
 			string gameId = Guid.NewGuid().ToString();
 			Console.WriteLine($"Created game {gameId}");
-			Games.Add(new GameState(gameId));
+			Games.Add(new Game(gameId));
 			return gameId;
+		}
+
+		public void AddClientToGame(string gameId, string clientId)
+		{
+			lock (Games)
+			{
+				// TODO: validate/provide error message for games that already have four or more players or that have already started
+				bool gameCanAcceptClient = true;
+				if (gameCanAcceptClient)
+				{
+					Games.Find(x => x.GameId == gameId).ClientIds.Add(clientId);
+					Console.WriteLine($"Added user to game\n  user: {clientId}\n  game: {gameId}");
+				}
+			}
 		}
 	}
 }
