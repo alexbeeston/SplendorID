@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-using Newtonsoft.Json;
-
 using Global;
 using Global.Messaging;
-using Global.Messaging.Messages;
 
 namespace Client
 {
@@ -14,9 +11,15 @@ namespace Client
 	{
 		protected Random RandNumberGenerator { get; set; }
 
+		// Init
 		public BotClient()
 		{
 			RandNumberGenerator = new Random();
+		}
+
+		protected override void GreetClient()
+		{
+			return;
 		}
 
 		protected override string GetUserName()
@@ -33,17 +36,23 @@ namespace Client
 			return selectedName;
 		}
 
-		protected override void GreetClient()
+		protected override GameEntryMethod GetGameEntryMethod()
 		{
-			return;
+			throw new NotImplementedException();
 		}
 
+		protected override string GetGameIdOfGameToJoin()
+		{
+			throw new NotImplementedException();
+		}
+
+		// Error Handling
 		protected override void HandleServerError(ErrorCode code)
 		{
 			switch (code)
 			{
 				case ErrorCode.UserNameTaken:
-					RegisterClient(GetUserName());
+					RequestRegistration();
 					break;
 				default:
 					throw new Exception("Error code not registered on client");

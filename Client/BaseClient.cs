@@ -30,9 +30,11 @@ namespace Client
 			EstablishMessengerConnection();
 			GreetClient();
 			EstablishListener();
-			RegisterClient(GetUserName());
+			RequestRegistration();
 			Listener.Wait();
 		}
+
+		// Init Methods
 
 		private void EstablishMessengerConnection()
 		{
@@ -60,7 +62,13 @@ namespace Client
 			switch (message.EventCode)
 			{
 				case nameof(RegisterNewClientResponse):
-					AcceptClientRegistration(message);
+					AcceptRegisterNewClientResponse(message);
+					break;
+				case nameof(CreateGameResponse):
+					AcceptCreateGameResponse(message);
+					break;
+				case nameof(JoinGameResponse):
+					AcceptJoinGameResponse(message);
 					break;
 				default:
 					Console.WriteLine("Event code not recognized");
@@ -68,36 +76,96 @@ namespace Client
 			}
 		}
 
-		protected void RegisterClient(string userName)
+		// Game Play
+		protected void RequestRegistration()
 		{
 			var payload = new RegisterNewClientRequest()
 			{
-				UserName = userName,
+				UserName = GetUserName()
 			};
-			Messenger.SendMessage(Message.CreateMessage(string.Empty, payload));
+			Messenger.SendMessage(string.Empty, payload);
 		}
 
-
-		// Event Handlers
-		protected void AcceptClientRegistration(Message message)
+		protected void EnterGame()
 		{
-			var payload = JsonConvert.DeserializeObject<RegisterNewClientResponse>(message.SerializedPayload);
-			if (payload.Success)
+			GameEntryMethod entryMethod = GetGameEntryMethod();
+			if (entryMethod == GameEntryMethod.Create)
 			{
-				State.ClientId = payload.ClientId;
-				State.UserName = payload.UserName;
-				AuthorizationKey = payload.AuthorizationKey;
-				Console.WriteLine($"Successfully registered on the server with the user name {State.UserName}");
+				CreateGame();
+			}
+			else if (entryMethod == GameEntryMethod.Join)
+			{
+				string gameId = GetGameIdOfGameToJoin();
+				JoinGame(gameId);
 			}
 			else
 			{
-				HandleServerError(payload.ErrorCode);
+				throw new Exception("Game entry method not recognized");
 			}
 		}
 
-		// Concrete Methods
-		protected abstract void HandleServerError(ErrorCode code); // might have a lot of duplicate code (?)
+		protected void CreateGame()
+		{
+			var payload = new CreateGameRequest();
+			Messenger.SendMessage(State.ClientId, payload);
+		}
+
+		protected void JoinGame(string gameId)
+		{
+			var payload = new JoinGameRequest
+			{
+				GameId = gameId
+			};
+			Messenger.SendMessage(State.ClientId, payload);
+		}
+
+		// Server Event Handlers
+		protected void AcceptRegisterNewClientResponse(Message message)
+		{
+			var payload = JsonConvert.DeserializeObject<RegisterNewClientResponse>(message.SerializedPayload);
+			if (!payload.Success)
+			{
+				HandleServerError(payload.ErrorCode);
+				return;
+			}
+
+			State.ClientId = payload.ClientId;
+			State.UserName = payload.UserName;
+			AuthorizationKey = payload.AuthorizationKey;
+			Console.WriteLine($"Successfully registered on the server with the user name {State.UserName}");
+			EnterGame();
+		}
+
+		protected void AcceptCreateGameResponse(Message message)
+		{
+			var payload = JsonConvert.DeserializeObject<CreateGameResponse>(message.SerializedPayload);
+			if (!payload.Success)
+			{
+				HandleServerError(payload.ErrorCode);
+				return;
+			}
+			JoinGame(payload.GameId);
+		}
+
+		protected void AcceptJoinGameResponse(Message message)
+		{
+			var payload = JsonConvert.DeserializeObject<JoinGameResponse>(message.SerializedPayload);
+			if (!payload.Success)
+			{
+				HandleServerError(payload.ErrorCode);
+				return;
+			}
+			State.GameId = payload.GameId;
+			Console.WriteLine($"Just joined game {payload.GameId}");
+		}
+
+		// Helpers
+
+		// Abstract Methods
+		protected abstract void HandleServerError(ErrorCode code); // might have a lot of duplicate code
 		protected abstract void GreetClient();
 		protected abstract string GetUserName();
+		protected abstract GameEntryMethod GetGameEntryMethod();
+		protected abstract string GetGameIdOfGameToJoin();
 	}
 }
