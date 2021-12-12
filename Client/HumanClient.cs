@@ -23,5 +23,17 @@ namespace Client
 			Console.WriteLine("--- Welcome to Splendor ---");
 		}
 
+		protected override void HandleServerError(ErrorCode code)
+		{
+			switch (code)
+			{
+				case ErrorCode.UserNameTaken:
+					Console.WriteLine("The user name is taken. Please try again");
+					RegisterClient(GetUserName());
+					break;
+				default:
+					throw new Exception("Error code not registered on client");
+			}
+		}
 	}
 }

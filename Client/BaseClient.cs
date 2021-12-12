@@ -85,12 +85,11 @@ namespace Client
 				State.ClientId = payload.ClientId;
 				State.UserName = payload.UserName;
 				AuthorizationKey = payload.AuthorizationKey;
-				Console.WriteLine($"ClientId: {State.ClientId}\nAuthorizationKey: {AuthorizationKey}\n");
+				Console.WriteLine($"Successfully registered on the user with the user name {State.UserName}");
 			}
 			else
 			{
-				HandleError("That user name is already taken. Please try again", payload.ErrorCode);
-				RegisterClient(GetUserName());
+				HandleServerError(payload.ErrorCode);
 			}
 		}
 
@@ -99,6 +98,7 @@ namespace Client
 			Console.WriteLine(error);
 		}
 
+		protected abstract void HandleServerError(ErrorCode code);
 		protected abstract void GreetClient();
 		protected abstract string GetUserName();
 	}
