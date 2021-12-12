@@ -14,6 +14,7 @@ namespace Server
 		private Messenger Messenger { get; set; }
 		private IDataProvider DataProvider { get; set; }
 
+		// Init
 		public ClientHandler(Messenger messenger, IDataProvider dataProvider)
 		{
 			Messenger = messenger;
@@ -24,16 +25,19 @@ namespace Server
 		{
 			while (true)
 			{
-				HandleSocketInput(Messenger.ReceiveMessage());
+				DispatchMessage(Messenger.ReceiveMessage());
 			}
 		}
 
-		private void HandleSocketInput(Message message)
+		private void DispatchMessage(Message message)
 		{
 			switch (message.EventCode)
 			{
 				case nameof(RegisterNewClientRequest):
-					RegisterNewClient(message);
+					HandleRegisterNewClientRequest(message);
+					break;
+				case nameof(CreateGameRequest):
+					HandleCreateGameRequest(message);
 					break;
 				default:
 					Console.WriteLine($"Event code not recognized: {message.EventCode}");
@@ -41,7 +45,8 @@ namespace Server
 			}
 		}
 
-		private void RegisterNewClient(Message message) // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
+		// Client Event Handlers
+		private void HandleRegisterNewClientRequest(Message message) // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
 		{
 			var requestPayload = JsonConvert.DeserializeObject<RegisterNewClientRequest>(message.SerializedPayload);
 			string clientId = string.Empty;
@@ -57,7 +62,7 @@ namespace Server
 					UserName = requestPayload.UserName
 				};
 			}
-			catch (UserNameTaken)
+			catch (UserNameNotAvailable)
 			{
 				response = new RegisterNewClientResponse
 				{
@@ -65,7 +70,18 @@ namespace Server
 					ErrorCode = ErrorCode.UserNameTaken
 				};
 			}
-			Messenger.SendMessage(Message.CreateMessage(clientId, response));
+			Messenger.SendMessage(clientId, response);
+		}
+
+		private void HandleCreateGameRequest(Message message)
+		{
+			// TODO: verify user is registered
+			string gameId = DataProvider.CreateGame();
+			var response = new CreateGameResponse
+			{
+				GameId = gameId
+			};
+			Messenger.SendMessage(message.ClientId, response);
 		}
 	}
 }

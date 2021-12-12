@@ -24,5 +24,6 @@ namespace Global
 		public int Wild { get; set; }
 		public string ClientId { get; set; }
 		public string UserName { get; set; }
+		public string GameId { get; set; }
 	}
 }

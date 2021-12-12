@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Server.Exceptions
 {
-	class UserNameTaken : Exception
+	class UserNameNotAvailable : Exception
 	{
 	}
 }

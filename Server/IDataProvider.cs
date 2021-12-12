@@ -14,5 +14,6 @@ namespace Server
 		/// <returns>The tuple (clientId, authorizationKey)</returns>
 		public (string, string) AddNewClient(string userName);
 		public ClientState GetPlayerState(string authToken);
+		public string CreateGame();
 	}
 }

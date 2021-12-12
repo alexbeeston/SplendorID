@@ -12,14 +12,5 @@ namespace Global.Messaging
 		public string EventCode { get; set; }
 		public string SerializedPayload { get; set; }
 
-		public static Message CreateMessage(string clientId, BasePayload payload)
-		{
-			return new Message
-			{
-				ClientId = clientId,
-				EventCode = payload.GetType().Name,
-				SerializedPayload = JsonConvert.SerializeObject(payload),
-			};
-		}
 	}
 }

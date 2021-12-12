@@ -27,8 +27,15 @@ namespace Global
 			Encoding = Encoding.UTF8;
 		}
 
-		public void SendMessage(Message message)
+		public void SendMessage(string clientId, BasePayload payload)
 		{
+			var message = new Message
+			{
+				ClientId = clientId,
+				EventCode = payload.GetType().Name,
+				SerializedPayload = JsonConvert.SerializeObject(payload),
+			};
+
 			byte[] encodedPayload = Encoding.GetBytes(JsonConvert.SerializeObject(message));
 			int indexOfNextWrite = 0;
 			do

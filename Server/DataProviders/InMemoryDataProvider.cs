@@ -11,6 +11,14 @@ namespace Server.DataProviders
 	{
 		private readonly List<ClientState> Clients;
 		private readonly Dictionary<string, string> AuthorizationMappings;
+		private readonly List<GameState> Games;
+
+		public InMemoryDataProvider()
+		{
+			Clients = new List<ClientState>();
+			AuthorizationMappings = new Dictionary<string, string>();
+			Games = new List<GameState>();
+		}
 
 		public (string, string) AddNewClient(string userName)
 		{
@@ -20,14 +28,14 @@ namespace Server.DataProviders
 			{
 				if (Clients.Exists(x => x.UserName == userName))
 				{
-					throw new UserNameTaken();
+					throw new UserNameNotAvailable();
 				}
 				clientId = Guid.NewGuid().ToString();
 				authorizationKey = Guid.NewGuid().ToString();
 				Clients.Add(new ClientState(clientId, userName));
 			}
 			AuthorizationMappings.Add(clientId, authorizationKey);
-			Console.WriteLine($"Created user {clientId}, with user name {userName} and authorization key {authorizationKey}");
+			Console.WriteLine($"Created user {userName}\n  id - {clientId}\n  auth key: {authorizationKey}");
 			return (clientId, authorizationKey);
 		}
 
@@ -39,10 +47,12 @@ namespace Server.DataProviders
 			}
 		}
 
-		public InMemoryDataProvider()
+		public string CreateGame()
 		{
-			Clients = new List<ClientState>();
-			AuthorizationMappings = new Dictionary<string, string>();
+			string gameId = Guid.NewGuid().ToString();
+			Console.WriteLine($"Created game {gameId}");
+			Games.Add(new GameState(gameId));
+			return gameId;
 		}
 	}
 }

@@ -132,7 +132,6 @@ namespace Client
 			State.ClientId = payload.ClientId;
 			State.UserName = payload.UserName;
 			AuthorizationKey = payload.AuthorizationKey;
-			Console.WriteLine($"Successfully registered on the server with the user name {State.UserName}");
 			EnterGame();
 		}
 
