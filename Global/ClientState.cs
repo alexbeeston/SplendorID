@@ -6,9 +6,11 @@ namespace Global
 {
 	public class ClientState
 	{
-		public ClientState(string clientId)
+		public ClientState() { }
+		public ClientState(string clientId, string userName)
 		{
 			ClientId = clientId;
+			UserName = userName;
 		}
 
 		public List<string> ClaimedMines { get; set; }

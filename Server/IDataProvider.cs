@@ -12,7 +12,7 @@ namespace Server
 		/// Creates a new client
 		/// </summary>
 		/// <returns>The tuple (clientId, authorizationKey)</returns>
-		public (string, string) AddNewClient();
+		public (string, string) AddNewClient(string userName);
 		public ClientState GetPlayerState(string authToken);
 	}
 }

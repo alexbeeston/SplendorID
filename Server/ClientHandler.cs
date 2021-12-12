@@ -1,8 +1,11 @@
 ﻿using System;
 
+using Newtonsoft.Json;
+
 using Global;
 using Global.Messaging;
 using Global.Messaging.Messages;
+using Server.Exceptions;
 
 namespace Server
 {
@@ -30,7 +33,7 @@ namespace Server
 			switch (message.EventCode)
 			{
 				case nameof(RegisterNewClientRequest):
-					RegisterNewClient();
+					RegisterNewClient(message);
 					break;
 				default:
 					Console.WriteLine($"Event code not recognized: {message.EventCode}");
@@ -38,15 +41,31 @@ namespace Server
 			}
 		}
 
-		private void RegisterNewClient() // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
+		private void RegisterNewClient(Message message) // add a return type for better self-documentation and then send the message from the caller? Could also save repeated code
 		{
-			(string clientId, string authorizationKey) = DataProvider.AddNewClient();
-			var payload = new RegisterNewClientResponse
+			var requestPayload = JsonConvert.DeserializeObject<RegisterNewClientRequest>(message.SerializedPayload);
+			string clientId = string.Empty;
+			string authorizationKey;
+			RegisterNewClientResponse response;
+			try
 			{
-				AuthorizationKey = authorizationKey,
-				ClientId = clientId,
-			};
-			Messenger.SendMessage(Message.CreateMessage(clientId, payload));
+				(clientId, authorizationKey) = DataProvider.AddNewClient(requestPayload.UserName);
+				response = new RegisterNewClientResponse
+				{
+					AuthorizationKey = authorizationKey,
+					ClientId = clientId,
+					UserName = requestPayload.UserName
+				};
+			}
+			catch (UserNameTaken)
+			{
+				response = new RegisterNewClientResponse
+				{
+					Success = false,
+					ErrorCode = ErrorCode.UserNameTaken
+				};
+			}
+			Messenger.SendMessage(Message.CreateMessage(clientId, response));
 		}
 	}
 }

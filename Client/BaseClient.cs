@@ -15,17 +15,22 @@ namespace Client
 {
 	abstract class BaseClient
 	{
-		protected string ClientId { get; set; }
+		protected ClientState State { get; set; }
 		protected string AuthorizationKey { get; set; }
 		protected Messenger Messenger { get; set; }
 		private Task Listener { get; set; }
+
+		public BaseClient()
+		{
+			State = new ClientState();
+		}
 
 		public void Run()
 		{
 			EstablishMessengerConnection();
 			GreetClient();
 			EstablishListener();
-			RegisterClientOnServer(GetUserName());
+			RegisterClient(GetUserName());
 			Listener.Wait();
 		}
 
@@ -55,7 +60,7 @@ namespace Client
 			switch (message.EventCode)
 			{
 				case nameof(RegisterNewClientResponse):
-					HandleNewClientCreated(message);
+					HandleRegisterClient(message);
 					break;
 				default:
 					Console.WriteLine("Event code not recognized");
@@ -63,19 +68,35 @@ namespace Client
 			}
 		}
 
-		protected void RegisterClientOnServer(string userName)
+		protected void RegisterClient(string userName)
 		{
-			// TODO: add userName to CreateNewClient - change name to register client
-			var payload = new RegisterNewClientRequest();
+			var payload = new RegisterNewClientRequest()
+			{
+				UserName = userName,
+			};
 			Messenger.SendMessage(Message.CreateMessage(string.Empty, payload));
 		}
 
-		protected void HandleNewClientCreated(Message message)
+		protected void HandleRegisterClient(Message message)
 		{
 			var payload = JsonConvert.DeserializeObject<RegisterNewClientResponse>(message.SerializedPayload);
-			ClientId = payload.ClientId;
-			AuthorizationKey = payload.AuthorizationKey;
-			Console.WriteLine($"ClientId: {ClientId}\nAuthorizationKey: {AuthorizationKey}\n");
+			if (payload.Success)
+			{
+				State.ClientId = payload.ClientId;
+				State.UserName = payload.UserName;
+				AuthorizationKey = payload.AuthorizationKey;
+				Console.WriteLine($"ClientId: {State.ClientId}\nAuthorizationKey: {AuthorizationKey}\n");
+			}
+			else
+			{
+				HandleError("That user name is already taken. Please try again", payload.ErrorCode);
+				RegisterClient(GetUserName());
+			}
+		}
+
+		protected void HandleError(string error, ErrorCode code)
+		{
+			Console.WriteLine(error);
 		}
 
 		protected abstract void GreetClient();

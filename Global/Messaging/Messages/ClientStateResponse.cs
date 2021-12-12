@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Global.Messaging.Messages
 {
-	public class ClientStateResponse : BasePayload
+	public class ClientStateResponse : BaseResponsePayload
 	{
 		public ClientState ClientState { get; set; }
 	}
