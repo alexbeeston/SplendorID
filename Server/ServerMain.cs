@@ -21,6 +21,7 @@ namespace Server
 			const int MAX_REQUESTS = 10;
 			listener.Listen(MAX_REQUESTS);
 			IDataProvider dataProvider = new InMemoryDataProvider();
+			dataProvider.CreateGame();
 
 			while (true)
 			{

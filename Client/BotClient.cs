@@ -38,7 +38,7 @@ namespace Client
 
 		protected override GameEntryMethod GetGameEntryMethod()
 		{
-			throw new NotImplementedException();
+			return GameEntryMethod.Join;
 		}
 
 		protected override string GetGameIdOfGameToJoin()

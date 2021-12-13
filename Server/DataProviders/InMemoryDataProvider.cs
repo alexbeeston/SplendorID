@@ -49,10 +49,23 @@ namespace Server.DataProviders
 
 		public string CreateGame()
 		{
-			string gameId = Guid.NewGuid().ToString();
-			Console.WriteLine($"Created game {gameId}");
-			Games.Add(new Game(gameId));
-			return gameId;
+			lock (Games)
+			{
+				string gameId;
+				bool addedGame = false;
+				do
+				{
+					gameId = Guid.NewGuid().ToString().Substring(0, 5);
+					if (Games.Find(x => x.GameId == gameId) == default)
+					{
+						Games.Add(new Game(gameId));
+						Console.WriteLine($"Created game {gameId}");
+						addedGame = true;
+					}
+				} while (!addedGame);
+
+				return gameId;
+			}
 		}
 
 		public void AddClientToGame(string gameId, string clientId)
