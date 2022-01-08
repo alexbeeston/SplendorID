@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Global.Messaging.Messages.Init
+namespace Global.Messaging.Payloads.Init
 {
 	public class RegisterNewClientRequest : BasePayload
 	{
-		public string UserName { get; set; }
+		public string RequestedUserName { get; set; }
 	}
 }

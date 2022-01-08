@@ -6,6 +6,7 @@ namespace Global.Messaging
 {
 	public enum ErrorCode
 	{
-		UserNameTaken
+		None,
+		UserNameTaken,
 	}
 }

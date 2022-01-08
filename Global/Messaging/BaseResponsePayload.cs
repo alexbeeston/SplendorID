@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Global.Messaging
 {
-	public class BaseResponsePayload : BasePayload
+	public abstract class BaseResponsePayload : BasePayload
 	{
 		public bool Success { get; set; } = true;
-		public ErrorCode ErrorCode { get; set; }
+		public ErrorCode Error { get; set; } = ErrorCode.None;
 	}
 }

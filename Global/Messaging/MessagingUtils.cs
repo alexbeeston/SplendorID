@@ -1,40 +1,18 @@
 ﻿using System;
-using System.Net.Http;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using Global.Messaging;
-
-
-namespace Global
+namespace Global.Messaging
 {
-	public delegate void SocketHandler(string socketInput);
-
-	/// <summary>
-	/// A helper class for communicating over a socket
-	/// </summary>
-	public class Messenger
+	public static class MessagingUtils
 	{
-		public Messenger(Socket socket)
+		public static void SendMessage(Socket socket, BasePayload payload)
 		{
-			Socket = socket;
-			InternalBufferSize = 1024;
-			BytesRequiredForHeaders = 1;
-			Encoding = Encoding.UTF8;
-		}
-
-		public string SendMessage(string clientId, BasePayload payload)
-		{
-			string messageId = Guid.NewGuid().ToString();
 			var message = new Message
 			{
-				ClientId = clientId,
-				EventCode = payload.GetType().Name,
-				MessageId = messageId,
+				PayloadType = payload.GetType().Name,
 				SerializedPayload = JsonConvert.SerializeObject(payload),
 			};
 
@@ -45,20 +23,18 @@ namespace Global
 				byte[] packet = new byte[Math.Min(InternalBufferSize, encodedPayload.Length - indexOfNextWrite + BytesRequiredForHeaders)];
 				WriteHeaders(packet, encodedPayload, indexOfNextWrite);
 				indexOfNextWrite = CopyDataToPacket(packet, encodedPayload, indexOfNextWrite);
-				Socket.Send(packet);
+				socket.Send(packet);
 			}
 			while (indexOfNextWrite < encodedPayload.Length);
-
-			return messageId;
 		}
 
-		public Message ReceiveMessage()
+		public static Message ReceiveMessage(Socket socket)
 		{
 			var stringBuilder = new StringBuilder();
 			byte[] buffer = new byte[InternalBufferSize];
 			do
 			{
-				int numReceivedBytes = Socket.Receive(buffer);
+				int numReceivedBytes = socket.Receive(buffer);
 				string message = Encoding.GetString(buffer, BytesRequiredForHeaders, numReceivedBytes - BytesRequiredForHeaders);
 				stringBuilder.Append(message);
 			} while (buffer[0] == 1);
@@ -66,13 +42,21 @@ namespace Global
 			return JsonConvert.DeserializeObject<Message>(stringBuilder.ToString());
 		}
 
-		private Socket Socket { get; set; }
-		private int BytesAvailableForPayload { get { return InternalBufferSize - BytesRequiredForHeaders; } }
-		private readonly Encoding Encoding;
-		private readonly int InternalBufferSize;
-		private readonly int BytesRequiredForHeaders;
+		public static T Parse<T>(Message message)
+		{
+			if (message.PayloadType != nameof(T))
+			{
+				throw new Exception();
+			}
+			else return JsonConvert.DeserializeObject<T>(message.SerializedPayload);
+		}
 
-		private void WriteHeaders(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
+		private static int BytesAvailableForPayload { get { return InternalBufferSize - BytesRequiredForHeaders; } }
+		private static readonly Encoding Encoding;
+		private static readonly int InternalBufferSize;
+		private static readonly int BytesRequiredForHeaders;
+
+		private static void WriteHeaders(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
 		{
 			bool isLastPacket = encodedPayload.Length - indexOfNextWrite <= BytesAvailableForPayload;
 			bool readAgain = !isLastPacket;
@@ -80,7 +64,7 @@ namespace Global
 			packet[0] = (byte)(readAgain ? 1 : 0);
 		}
 
-		private int CopyDataToPacket(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
+		private static int CopyDataToPacket(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
 		{
 			int bytesRemaining = encodedPayload.Length - indexOfNextWrite;
 			int bytesToRead = Math.Min(BytesAvailableForPayload, bytesRemaining);
@@ -99,5 +83,3 @@ namespace Global
  * ## Headers
  * index 0: readAgain (1 for read another packet, 0 for this was the last packet)
  */
-
-

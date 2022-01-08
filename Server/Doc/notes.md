@@ -213,3 +213,12 @@ Game:
 
 
 
+GetInformationRequest
+GetInformationResponse // and then you can validate that it's answering the question you asked (?)
+
+
+Create an inquiry class with an enum to request information? A special type of request that is just a question
+lastPlayeradded?
+whatIsGameState?
+isMyLastTurn?
+etc.

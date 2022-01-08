@@ -18,7 +18,7 @@ namespace Client
 	{
 		protected ClientState State { get; set; }
 		protected string AuthorizationKey { get; set; }
-		protected Messenger Messenger { get; set; }
+		protected MessagingUtils Messenger { get; set; }
 		private Task Listener { get; set; }
 		/// <summary>
 		/// A list of message ids that shouldn't be handled by the default dispatcher
@@ -48,7 +48,7 @@ namespace Client
 			IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
 			Socket socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			socket.Connect(remoteEP);
-			Messenger = new Messenger(socket);
+			Messenger = new MessagingUtils(socket);
 		}
 
 		private void EstablishDefaultListener()
@@ -72,7 +72,7 @@ namespace Client
 
 		protected void DefaultDispatcher(Message message)
 		{
-			switch (message.EventCode)
+			switch (message.PayloadType)
 			{
 				case nameof(RegisterNewClientResponse):
 					AcceptRegisterNewClientResponse(message);
@@ -95,7 +95,7 @@ namespace Client
 		{
 			var payload = new RegisterNewClientRequest()
 			{
-				UserName = GetUserName()
+				RequestedUserName = GetUserName()
 			};
 			Messenger.SendMessage(string.Empty, payload);
 		}
