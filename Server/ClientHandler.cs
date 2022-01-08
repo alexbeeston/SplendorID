@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 using Global;
 using Global.Messaging;
-using Global.Messaging.Messages;
+using Global.Messaging.Messages.Init;
 using Server.Exceptions;
 
 namespace Server

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Global.Messaging.Messages
+namespace Global.Messaging.Messages.Init
 {
 	public class RegisterNewClientRequest : BasePayload
 	{

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 using Global;
 using Global.Messaging;
+using Global.Messaging.Messages.State;
 
 namespace Client
 {
@@ -43,7 +45,12 @@ namespace Client
 
 		protected override string GetGameIdOfGameToJoin()
 		{
-			throw new NotImplementedException();
+			var gamesRequest = new GetGamesRequest();
+			var messageId = Messenger.SendMessage(State.ClientId, gamesRequest);
+
+
+			ReservedMessages.Add(messageId);
+			ReservedMessages.Remove(messageId);
 		}
 
 		// Error Handling

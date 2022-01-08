@@ -9,7 +9,8 @@ using Newtonsoft.Json;
 
 using Global;
 using Global.Messaging;
-using Global.Messaging.Messages;
+using Global.Messaging.Messages.Init;
+using Global.Messaging.Messages.State;
 
 namespace Client
 {
@@ -19,6 +20,10 @@ namespace Client
 		protected string AuthorizationKey { get; set; }
 		protected Messenger Messenger { get; set; }
 		private Task Listener { get; set; }
+		/// <summary>
+		/// A list of message ids that shouldn't be handled by the default dispatcher
+		/// </summary>
+		protected List<string> ReservedMessages { get; set; }
 
 		public BaseClient()
 		{
@@ -29,7 +34,7 @@ namespace Client
 		{
 			EstablishMessengerConnection();
 			GreetClient();
-			EstablishListener();
+			EstablishDefaultListener();
 			RequestRegistration();
 			Listener.Wait();
 		}
@@ -46,18 +51,26 @@ namespace Client
 			Messenger = new Messenger(socket);
 		}
 
-		private void EstablishListener()
+		private void EstablishDefaultListener()
 		{
 			Listener = Task.Run(() =>
 			{
 				while (true)
 				{
-					DispatchMessage(Messenger.ReceiveMessage());
+					var message = Messenger.ReceiveMessage();
+					if (ReservedMessages.Contains(message.MessageId))
+					{
+						// notify everyone that this message just came through
+					}
+					else
+					{
+						DefaultDispatcher(message);
+					}
 				}
 			});
 		}
 
-		protected void DispatchMessage(Message message)
+		protected void DefaultDispatcher(Message message)
 		{
 			switch (message.EventCode)
 			{
@@ -70,6 +83,7 @@ namespace Client
 				case nameof(JoinGameResponse):
 					AcceptJoinGameResponse(message);
 					break;
+				case nameof(GetGamesResponse):
 				default:
 					Console.WriteLine("Event code not recognized");
 					break;
@@ -159,6 +173,9 @@ namespace Client
 		}
 
 		// Helpers
+		protected Message WaitForMessage(string messageId)
+		{
+		}
 
 		// Abstract Methods
 		protected abstract void HandleServerError(ErrorCode code); // might have a lot of duplicate code

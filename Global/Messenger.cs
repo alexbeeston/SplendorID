@@ -27,12 +27,14 @@ namespace Global
 			Encoding = Encoding.UTF8;
 		}
 
-		public void SendMessage(string clientId, BasePayload payload)
+		public string SendMessage(string clientId, BasePayload payload)
 		{
+			string messageId = Guid.NewGuid().ToString();
 			var message = new Message
 			{
 				ClientId = clientId,
 				EventCode = payload.GetType().Name,
+				MessageId = messageId,
 				SerializedPayload = JsonConvert.SerializeObject(payload),
 			};
 
@@ -46,6 +48,8 @@ namespace Global
 				Socket.Send(packet);
 			}
 			while (indexOfNextWrite < encodedPayload.Length);
+
+			return messageId;
 		}
 
 		public Message ReceiveMessage()
