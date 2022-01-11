@@ -15,7 +15,7 @@ namespace Server
 			try
 			{
 				ActualMain();
-				Console.WriteLine("All done");
+				Console.WriteLine("End of Main");
 				Console.ReadLine();
 			}
 			catch (Exception e)

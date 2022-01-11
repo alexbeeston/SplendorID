@@ -27,6 +27,7 @@ namespace Server.Types
 				Socket = socket,
 				UserName = userName,
 			});
+			Console.WriteLine($"Just added {userName}");
 
 			MessagingUtils.SendMessage(socket, new RegisterNewClientResponse
 			{
@@ -58,9 +59,7 @@ namespace Server.Types
 						userNameIsTaken = false;
 					}
 				}
-				Console.WriteLine($"Received user name {requestedUserName}. Is taken? {userNameIsTaken}");
 			} while (userNameIsTaken);
-			Console.WriteLine($"Going to assign username {requestedUserName}");
 			return requestedUserName;
 		}
 	}

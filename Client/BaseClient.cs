@@ -24,7 +24,7 @@ namespace Client
 			SetSocket();
 			RegisterWithServer();
 			GreetClient();
-			Console.WriteLine("all done, press enter to finish");
+			Console.WriteLine("End of Main");
 			Console.ReadLine();
 		}
 
@@ -36,7 +36,6 @@ namespace Client
 			Socket socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			socket.Connect(remoteEP);
 			Socket = socket;
-			Console.WriteLine("Just opened socket connection");
 		}
 
 		private void RegisterWithServer()
@@ -45,7 +44,6 @@ namespace Client
 			string userName;
 			do
 			{
-				Console.WriteLine("About to collect userName");
 				userName = GetUserName();
 				MessagingUtils.SendMessage(Socket, new RegisterNewClientRequest
 				{
@@ -60,7 +58,6 @@ namespace Client
 
 			UserName = userName;
 			ClientId = response.ClientId;
-			Console.WriteLine("Successfully registered with server");
 		}
 
 		// Abstract Methods
