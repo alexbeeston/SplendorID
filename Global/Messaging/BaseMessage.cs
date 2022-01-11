@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Global.Messaging
 {
-	public abstract class BasePayload
+	public abstract class BaseMessage
 	{
 	}
 }

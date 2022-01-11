@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Global.Messaging
 {
-	public abstract class BaseResponsePayload : BasePayload
+	public abstract class BaseResponseMessage : BaseMessage
 	{
 		public bool Success { get; set; } = true;
 		public ErrorCode Error { get; set; } = ErrorCode.None;

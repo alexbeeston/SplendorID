@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using Global.Messaging;
-using Global.Messaging.Payloads;
-using Global.Messaging.Payloads.Init;
+using Global.Messaging.Messages;
+using Global.Messaging.Messages.Init;
 
 namespace Client
 {
@@ -41,7 +41,7 @@ namespace Client
 
 		private void RegisterWithServer()
 		{
-			RegisterNewClientResponse serverPayload;
+			RegisterNewClientResponse response;
 			string userName;
 			do
 			{
@@ -51,16 +51,15 @@ namespace Client
 				{
 					RequestedUserName = userName
 				});
-				var serverMessage = MessagingUtils.ReceiveMessage(Socket);
-				serverPayload = MessagingUtils.Parse<RegisterNewClientResponse>(serverMessage);
-				if (!serverPayload.Success && serverPayload.Error != ErrorCode.UserNameTaken)
+				response = MessagingUtils.ReceiveMessage<RegisterNewClientResponse>(Socket);
+				if (!response.Success && response.Error != ErrorCode.UserNameTaken)
 				{
-					throw new Exception($"Failed registration with code {serverPayload.Error}");
+					throw new Exception($"Failed registration with code {response.Error}");
 				}
-			} while (!serverPayload.Success);
+			} while (!response.Success);
 
 			UserName = userName;
-			ClientId = serverPayload.ClientId;
+			ClientId = response.ClientId;
 			Console.WriteLine("Successfully registered with server");
 		}
 

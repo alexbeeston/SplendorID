@@ -8,27 +8,21 @@ namespace Global.Messaging
 {
 	public static class MessagingUtils
 	{
-		public static void SendMessage(Socket socket, BasePayload payload)
+		public static void SendMessage(Socket socket, BaseMessage message)
 		{
-			var message = new Message
-			{
-				PayloadType = payload.GetType().Name,
-				SerializedPayload = JsonConvert.SerializeObject(payload),
-			};
-
-			byte[] encodedPayload = Encoding.GetBytes(JsonConvert.SerializeObject(message));
+			byte[] encodedMessage = Encoding.GetBytes(JsonConvert.SerializeObject(message));
 			int indexOfNextWrite = 0;
 			do
 			{
-				byte[] packet = new byte[Math.Min(InternalBufferSize, encodedPayload.Length - indexOfNextWrite + BytesRequiredForHeaders)];
-				WriteHeaders(packet, encodedPayload, indexOfNextWrite);
-				indexOfNextWrite = CopyDataToPacket(packet, encodedPayload, indexOfNextWrite);
+				byte[] packet = new byte[Math.Min(InternalBufferSize, encodedMessage.Length - indexOfNextWrite + BytesRequiredForHeaders)];
+				WriteHeaders(packet, encodedMessage, indexOfNextWrite);
+				indexOfNextWrite = CopyDataToPacket(packet, encodedMessage, indexOfNextWrite);
 				socket.Send(packet);
 			}
-			while (indexOfNextWrite < encodedPayload.Length);
+			while (indexOfNextWrite < encodedMessage.Length);
 		}
 
-		public static Message ReceiveMessage(Socket socket)
+		public static T ReceiveMessage<T>(Socket socket)
 		{
 			var stringBuilder = new StringBuilder();
 			byte[] buffer = new byte[InternalBufferSize];
@@ -39,34 +33,29 @@ namespace Global.Messaging
 				stringBuilder.Append(message);
 			} while (buffer[0] == 1);
 
-			return JsonConvert.DeserializeObject<Message>(stringBuilder.ToString());
+			return JsonConvert.DeserializeObject<T>(stringBuilder.ToString());
 		}
 
-		public static T Parse<T>(Message message)
-		{
-			return JsonConvert.DeserializeObject<T>(message.SerializedPayload); // TODO: set mesage ID as a field in the message and just serialize the whole thing; they're all messages now
-		}
-
-		private static int BytesAvailableForPayload { get { return InternalBufferSize - BytesRequiredForHeaders; } }
+		private static int BytesAvailableForMessage { get { return InternalBufferSize - BytesRequiredForHeaders; } }
 		private static readonly Encoding Encoding = Encoding.UTF8;
 		private static readonly int InternalBufferSize = 2048;
 		private static readonly int BytesRequiredForHeaders = 1;
 
 		private static void WriteHeaders(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
 		{
-			bool isLastPacket = encodedPayload.Length - indexOfNextWrite <= BytesAvailableForPayload;
+			bool isLastPacket = encodedPayload.Length - indexOfNextWrite <= BytesAvailableForMessage;
 			bool readAgain = !isLastPacket;
 
 			packet[0] = (byte)(readAgain ? 1 : 0);
 		}
 
-		private static int CopyDataToPacket(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
+		private static int CopyDataToPacket(byte[] packet, byte[] encodedMessage, int indexOfNextWrite)
 		{
-			int bytesRemaining = encodedPayload.Length - indexOfNextWrite;
-			int bytesToRead = Math.Min(BytesAvailableForPayload, bytesRemaining);
+			int bytesRemaining = encodedMessage.Length - indexOfNextWrite;
+			int bytesToRead = Math.Min(BytesAvailableForMessage, bytesRemaining);
 			for (int i = 0; i < bytesToRead; i++)
 			{
-				packet[BytesRequiredForHeaders + i] = encodedPayload[indexOfNextWrite + i];
+				packet[BytesRequiredForHeaders + i] = encodedMessage[indexOfNextWrite + i];
 			}
 			return indexOfNextWrite + bytesToRead;
 		}

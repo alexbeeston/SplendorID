@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 
 using Global.Messaging;
-using Global.Messaging.Payloads.Init;
+using Global.Messaging.Messages.Init;
 
 namespace Server.Types
 {
@@ -40,22 +40,21 @@ namespace Server.Types
 			bool userNameIsTaken = true;
 			do
 			{
-				var inboundMessage = MessagingUtils.ReceiveMessage(socket);
-				var inboundPayload = MessagingUtils.Parse<RegisterNewClientRequest>(inboundMessage);
+				var request = MessagingUtils.ReceiveMessage<RegisterNewClientRequest>(socket);
 				lock (Clients)
 				{
-					if (Clients.Exists(x => x.UserName == inboundPayload.RequestedUserName))
+					if (Clients.Exists(x => x.UserName == request.RequestedUserName))
 					{
-						var outboundPayload = new RegisterNewClientResponse
+						var response = new RegisterNewClientResponse
 						{
 							Success = false,
 							Error = ErrorCode.UserNameTaken
 						};
-						MessagingUtils.SendMessage(socket, outboundPayload);
+						MessagingUtils.SendMessage(socket, response);
 					}
 					else
 					{
-						requestedUserName = inboundPayload.RequestedUserName;
+						requestedUserName = request.RequestedUserName;
 						userNameIsTaken = false;
 					}
 				}
