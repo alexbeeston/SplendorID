@@ -9,4 +9,10 @@ namespace Global.Messaging
 		public bool Success { get; set; } = true;
 		public ErrorCode Error { get; set; } = ErrorCode.None;
 	}
+
+	public enum ErrorCode
+	{
+		None,
+		UserNameTaken,
+	}
 }

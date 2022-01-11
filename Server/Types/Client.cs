@@ -9,7 +9,6 @@ namespace Server.Types
 	{
 		public string AuthKey { get; set; }
 		public string ClientId { get; set; }
-		public bool IsAdmin { get; set; }
 		public Socket Socket { get; set; }
 		public string UserName { get; set; }
 	}

@@ -1,0 +1,2 @@
+﻿- Payloads currently contain success flags and error codes by inheritance. Rename payload, since a payload usually excludes such headers
+- Consolidate parsing of payloads into the messaging utils? How often do we get variable messages back? Aren't most toggles in the payloads themselves? Once the game has started we're almost for sure going not have to worry about getting different payloads (most likely 100% true)

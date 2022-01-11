@@ -4,6 +4,7 @@ using System.Net.Sockets;
 
 using Server.Types;
 using Global;
+using System.Threading.Tasks;
 
 namespace Server
 {
@@ -11,17 +12,35 @@ namespace Server
 	{
 		static void Main(string[] args)
 		{
+			try
+			{
+				ActualMain();
+				Console.WriteLine("All done");
+				Console.ReadLine();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				Console.ReadLine();
+			}
+		}
+
+		static void ActualMain()
+		{
+			const int NUM_PLAYERS = 4; // TODO: read from dotnet configuration app file
 			var listener = GetListener();
 			Game game = new Game();
 
-			Socket socket = listener.Accept();
-			game.AddClient(socket, true);
-			bool lastClientHasJoined;
-			do
+			Task[] addClientTasks = new Task[NUM_PLAYERS];
+			for (int i = 0; i < NUM_PLAYERS; i++)
 			{
-				socket = listener.Accept();
-				lastClientHasJoined = game.AddClient(socket, false);
-			} while (!lastClientHasJoined);
+				Socket socket = listener.Accept();
+				addClientTasks[i] = Task.Run(() =>
+				{
+					game.AddClient(socket);
+				});
+			}
+			Task.WaitAll(addClientTasks);
 		}
 
 		static Socket GetListener()

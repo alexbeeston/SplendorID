@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Global
+namespace Global.State
 {
 	public class ClientState
 	{

@@ -7,181 +7,65 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using Global;
 using Global.Messaging;
-using Global.Messaging.Messages.Init;
-using Global.Messaging.Messages.State;
+using Global.Messaging.Payloads;
+using Global.Messaging.Payloads.Init;
 
 namespace Client
 {
-	abstract class BaseClient
+	public abstract class BaseClient
 	{
-		protected ClientState State { get; set; }
-		protected string AuthorizationKey { get; set; }
-		protected MessagingUtils Messenger { get; set; }
-		private Task Listener { get; set; }
-		/// <summary>
-		/// A list of message ids that shouldn't be handled by the default dispatcher
-		/// </summary>
-		protected List<string> ReservedMessages { get; set; }
-
-		public BaseClient()
-		{
-			State = new ClientState();
-		}
+		protected Socket Socket { get; set; }
+		protected string UserName { get; set; }
+		protected string ClientId { get; set; }
 
 		public void Run()
 		{
-			EstablishMessengerConnection();
+			SetSocket();
+			RegisterWithServer();
 			GreetClient();
-			EstablishDefaultListener();
-			RequestRegistration();
-			Listener.Wait();
+			Console.WriteLine("all done, press enter to finish");
+			Console.ReadLine();
 		}
 
-		// Init Methods
-
-		private void EstablishMessengerConnection()
+		private void SetSocket()
 		{
 			IPHostEntry host = Dns.GetHostEntry("localhost");
 			IPAddress ipAddress = host.AddressList[0];
 			IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
 			Socket socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			socket.Connect(remoteEP);
-			Messenger = new MessagingUtils(socket);
+			Socket = socket;
+			Console.WriteLine("Just opened socket connection");
 		}
 
-		private void EstablishDefaultListener()
+		private void RegisterWithServer()
 		{
-			Listener = Task.Run(() =>
+			RegisterNewClientResponse serverPayload;
+			string userName;
+			do
 			{
-				while (true)
+				Console.WriteLine("About to collect userName");
+				userName = GetUserName();
+				MessagingUtils.SendMessage(Socket, new RegisterNewClientRequest
 				{
-					var message = Messenger.ReceiveMessage();
-					if (ReservedMessages.Contains(message.MessageId))
-					{
-						// notify everyone that this message just came through
-					}
-					else
-					{
-						DefaultDispatcher(message);
-					}
+					RequestedUserName = userName
+				});
+				var serverMessage = MessagingUtils.ReceiveMessage(Socket);
+				serverPayload = MessagingUtils.Parse<RegisterNewClientResponse>(serverMessage);
+				if (!serverPayload.Success && serverPayload.Error != ErrorCode.UserNameTaken)
+				{
+					throw new Exception($"Failed registration with code {serverPayload.Error}");
 				}
-			});
-		}
+			} while (!serverPayload.Success);
 
-		protected void DefaultDispatcher(Message message)
-		{
-			switch (message.PayloadType)
-			{
-				case nameof(RegisterNewClientResponse):
-					AcceptRegisterNewClientResponse(message);
-					break;
-				case nameof(CreateGameResponse):
-					AcceptCreateGameResponse(message);
-					break;
-				case nameof(JoinGameResponse):
-					AcceptJoinGameResponse(message);
-					break;
-				case nameof(GetGamesResponse):
-				default:
-					Console.WriteLine("Event code not recognized");
-					break;
-			}
-		}
-
-		// Game Play
-		protected void RequestRegistration()
-		{
-			var payload = new RegisterNewClientRequest()
-			{
-				RequestedUserName = GetUserName()
-			};
-			Messenger.SendMessage(string.Empty, payload);
-		}
-
-		protected void EnterGame()
-		{
-			GameEntryMethod entryMethod = GetGameEntryMethod();
-			if (entryMethod == GameEntryMethod.Create)
-			{
-				CreateGame();
-			}
-			else if (entryMethod == GameEntryMethod.Join)
-			{
-				string gameId = GetGameIdOfGameToJoin();
-				JoinGame(gameId);
-			}
-			else
-			{
-				throw new Exception("Game entry method not recognized");
-			}
-		}
-
-		protected void CreateGame()
-		{
-			var payload = new CreateGameRequest();
-			Messenger.SendMessage(State.ClientId, payload);
-		}
-
-		protected void JoinGame(string gameId)
-		{
-			var payload = new JoinGameRequest
-			{
-				GameId = gameId
-			};
-			Messenger.SendMessage(State.ClientId, payload);
-		}
-
-		// Server Event Handlers
-		protected void AcceptRegisterNewClientResponse(Message message)
-		{
-			var payload = JsonConvert.DeserializeObject<RegisterNewClientResponse>(message.SerializedPayload);
-			if (!payload.Success)
-			{
-				HandleServerError(payload.ErrorCode);
-				return;
-			}
-
-			State.ClientId = payload.ClientId;
-			State.UserName = payload.UserName;
-			AuthorizationKey = payload.AuthorizationKey;
-			EnterGame();
-		}
-
-		protected void AcceptCreateGameResponse(Message message)
-		{
-			var payload = JsonConvert.DeserializeObject<CreateGameResponse>(message.SerializedPayload);
-			if (!payload.Success)
-			{
-				HandleServerError(payload.ErrorCode);
-				return;
-			}
-			JoinGame(payload.GameId);
-		}
-
-		protected void AcceptJoinGameResponse(Message message)
-		{
-			var payload = JsonConvert.DeserializeObject<JoinGameResponse>(message.SerializedPayload);
-			if (!payload.Success)
-			{
-				HandleServerError(payload.ErrorCode);
-				return;
-			}
-			State.GameId = payload.GameId;
-			Console.WriteLine($"Just joined game {payload.GameId}");
-		}
-
-		// Helpers
-		protected Message WaitForMessage(string messageId)
-		{
+			UserName = userName;
+			ClientId = serverPayload.ClientId;
+			Console.WriteLine("Successfully registered with server");
 		}
 
 		// Abstract Methods
-		protected abstract void HandleServerError(ErrorCode code); // might have a lot of duplicate code
 		protected abstract void GreetClient();
 		protected abstract string GetUserName();
-		protected abstract GameEntryMethod GetGameEntryMethod();
-		protected abstract string GetGameIdOfGameToJoin();
 	}
 }

@@ -44,17 +44,13 @@ namespace Global.Messaging
 
 		public static T Parse<T>(Message message)
 		{
-			if (message.PayloadType != nameof(T))
-			{
-				throw new Exception();
-			}
-			else return JsonConvert.DeserializeObject<T>(message.SerializedPayload);
+			return JsonConvert.DeserializeObject<T>(message.SerializedPayload); // TODO: set mesage ID as a field in the message and just serialize the whole thing; they're all messages now
 		}
 
 		private static int BytesAvailableForPayload { get { return InternalBufferSize - BytesRequiredForHeaders; } }
-		private static readonly Encoding Encoding;
-		private static readonly int InternalBufferSize;
-		private static readonly int BytesRequiredForHeaders;
+		private static readonly Encoding Encoding = Encoding.UTF8;
+		private static readonly int InternalBufferSize = 2048;
+		private static readonly int BytesRequiredForHeaders = 1;
 
 		private static void WriteHeaders(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
 		{
