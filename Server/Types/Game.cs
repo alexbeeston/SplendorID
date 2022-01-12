@@ -18,27 +18,7 @@ namespace Server.Types
 
 		public void AddClient(Socket socket)
 		{
-			var userName = CollectClientUserName(socket);
-			var clientId = new Guid().ToString();
-
-			Clients.Add(new Client
-			{
-				ClientId = clientId,
-				Socket = socket,
-				UserName = userName,
-			});
-			Console.WriteLine($"Just added {userName}");
-
-			MessagingUtils.SendMessage(socket, new RegisterNewClientResponse
-			{
-				ClientId = clientId,
-			});
-		}
-
-		private string CollectClientUserName(Socket socket)
-		{
-			string requestedUserName = string.Empty;
-			bool userNameIsTaken = true;
+			Client client = null;
 			do
 			{
 				var request = MessagingUtils.ReceiveMessage<RegisterNewClientRequest>(socket);
@@ -55,12 +35,23 @@ namespace Server.Types
 					}
 					else
 					{
-						requestedUserName = request.RequestedUserName;
-						userNameIsTaken = false;
+						client = new Client
+						{
+							ClientId = new Guid().ToString(),
+							Socket = socket,
+							UserName = request.RequestedUserName
+						};
+						Clients.Add(client);
 					}
 				}
-			} while (userNameIsTaken);
-			return requestedUserName;
+			} while (client == null);
+
+			Console.WriteLine($"Just added {client.UserName}");
+
+			MessagingUtils.SendMessage(socket, new RegisterNewClientResponse
+			{
+				ClientId = client.ClientId
+			});
 		}
 	}
 }
