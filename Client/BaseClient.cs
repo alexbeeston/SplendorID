@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 using Global.Messaging;
 using Global.Messaging.Messages;
-using Global.State;
+using Global.Types;
 
 namespace Client
 {

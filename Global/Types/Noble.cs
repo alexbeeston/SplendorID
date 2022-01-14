@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Global.State
+namespace Global.Types
 {
-	public class ServerState
+	public class Noble : Commoditiy
 	{
 	}
 }

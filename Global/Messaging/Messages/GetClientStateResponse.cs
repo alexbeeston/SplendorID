@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-using Global.State;
+using Global.Types;
 
 namespace Global.Messaging.Messages
 {

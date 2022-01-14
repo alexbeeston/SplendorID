@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 
 using Global.Messaging;
-using Global.State;
+using Global.Types;
 using Global.Messaging.Messages;
 
 namespace Server.Types
