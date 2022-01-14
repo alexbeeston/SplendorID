@@ -1,29 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Text;
 
 namespace Global.State
 {
 	public class ClientState
 	{
-		public ClientState() { }
-		public ClientState(string clientId, string userName)
-		{
-			ClientId = clientId;
-			UserName = userName;
-		}
-
+		public int Points { get; set; }
+		public int Emerald { get; set; }
+		public int Diamond { get; set; }
+		public int Onyx { get; set; }
+		public int Ruby { get; set; }
+		public int Saphire { get; set; }
+		public int Wild { get; set; }
 		public List<string> ClaimedMines { get; set; }
 		public List<string> ClaimedNobles { get; set; }
 		public List<string> ReservedCards { get; set; }
-		public int Emeralds { get; set; }
-		public int Diamonds { get; set; }
-		public int Onyx { get; set; }
-		public int Rubies { get; set; }
-		public int Saphire { get; set; }
-		public int Wild { get; set; }
-		public string ClientId { get; set; }
-		public string UserName { get; set; }
-		public string GameId { get; set; }
 	}
 }

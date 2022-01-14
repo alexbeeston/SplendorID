@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Global.Messaging.Messages.Init
+namespace Global.Messaging.Messages
 {
 	public class RegisterNewClientResponse : BaseResponseMessage
 	{
 		public string ClientId { get; set; }
-		public bool IsAdmin { get; set; }
 	}
 }

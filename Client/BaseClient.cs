@@ -9,16 +9,12 @@ using Newtonsoft.Json;
 
 using Global.Messaging;
 using Global.Messaging.Messages;
-using Global.Messaging.Messages.Init;
+using Global.State;
 
 namespace Client
 {
-	public abstract class BaseClient
+	public abstract class BaseClient : IdentifiedClient 
 	{
-		protected Socket Socket { get; set; }
-		protected string UserName { get; set; }
-		protected string ClientId { get; set; }
-
 		public void Run()
 		{
 			SetSocket();

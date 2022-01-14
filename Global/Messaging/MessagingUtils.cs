@@ -43,6 +43,10 @@ namespace Global.Messaging
 
 		private static void WriteHeaders(byte[] packet, byte[] encodedPayload, int indexOfNextWrite)
 		{
+			/* Headers
+			 *   index 0: readAgain (1 for read another packet, 0 for this was the last packet)
+			 */
+
 			bool isLastPacket = encodedPayload.Length - indexOfNextWrite <= BytesAvailableForMessage;
 			bool readAgain = !isLastPacket;
 
@@ -62,9 +66,3 @@ namespace Global.Messaging
 	}
 }
 
-/*
- * # Documentation
- * 
- * ## Headers
- * index 0: readAgain (1 for read another packet, 0 for this was the last packet)
- */

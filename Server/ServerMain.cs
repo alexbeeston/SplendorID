@@ -41,6 +41,7 @@ namespace Server
 				});
 			}
 			Task.WaitAll(addClientTasks);
+			game.PlayGame();
 		}
 
 		static Socket GetListener()

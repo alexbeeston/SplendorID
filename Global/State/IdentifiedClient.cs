@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Server.Types
+namespace Global.State
 {
-	public class Client
+	public class IdentifiedClient : ClientState
 	{
-		public string AuthKey { get; set; }
 		public string ClientId { get; set; }
-		public Socket Socket { get; set; }
 		public string UserName { get; set; }
+		public Socket Socket { get; set; }
 	}
 }

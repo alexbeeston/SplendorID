@@ -4,21 +4,22 @@ using System.Linq;
 using System.Net.Sockets;
 
 using Global.Messaging;
-using Global.Messaging.Messages.Init;
+using Global.State;
+using Global.Messaging.Messages;
 
 namespace Server.Types
 {
 	public class Game
 	{
-		public List<Client> Clients { get; set; }
+		public List<IdentifiedClient> Clients { get; set; }
 		public Game()
 		{
-			Clients = new List<Client>();
+			Clients = new List<IdentifiedClient>();
 		}
 
 		public void AddClient(Socket socket)
 		{
-			Client client = null;
+			IdentifiedClient client = null;
 			do
 			{
 				var request = MessagingUtils.ReceiveMessage<RegisterNewClientRequest>(socket);
@@ -35,7 +36,7 @@ namespace Server.Types
 					}
 					else
 					{
-						client = new Client
+						client = new IdentifiedClient
 						{
 							ClientId = new Guid().ToString(),
 							Socket = socket,
@@ -52,6 +53,24 @@ namespace Server.Types
 			{
 				ClientId = client.ClientId
 			});
+		}
+
+		public void PlayGame()
+		{
+			bool isLastTurn = false;
+			do
+			{
+				foreach (var client in Clients)
+				{
+					// ask client for its state
+					// make sure that it matches what the server has on file
+					// send game state
+					// get Client's choice
+					// validate the client can take the turn
+					isLastTurn = client.Points >= 15;
+				}
+
+			} while (!isLastTurn);
 		}
 	}
 }
