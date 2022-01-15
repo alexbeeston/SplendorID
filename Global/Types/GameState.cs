@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Global.Types
 {
-	public class GameState
+	public class VisibleGameState
 	{
 		public List<IdentifiedClient> ClientStates { get; set; }
 		public List<DevelopmentCard> RevealvedDevelopmentCards { get; set; }

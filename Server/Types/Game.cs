@@ -11,15 +11,15 @@ namespace Server.Types
 {
 	public class Game
 	{
-		public List<IdentifiedClient> Clients { get; set; }
+		public List<AccessibleClient> Clients { get; set; }
 		public Game()
 		{
-			Clients = new List<IdentifiedClient>();
+			Clients = new List<AccessibleClient>();
 		}
 
 		public void AddClient(Socket socket)
 		{
-			IdentifiedClient client = null;
+			AccessibleClient client = null;
 			do
 			{
 				var request = MessagingUtils.ReceiveMessage<RegisterNewClientRequest>(socket);
@@ -36,7 +36,7 @@ namespace Server.Types
 					}
 					else
 					{
-						client = new IdentifiedClient
+						client = new AccessibleClient
 						{
 							ClientId = new Guid().ToString(),
 							Socket = socket,
