@@ -13,7 +13,7 @@ namespace Global.Types
 		public virtual bool Equals([AllowNull] Commoditiy other)
 		{
 			return
-				Points == Points &&
+				Points == other.Points &&
 				Price.Equals(other.Price);
 		}
 	}

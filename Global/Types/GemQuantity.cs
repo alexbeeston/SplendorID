@@ -7,8 +7,8 @@ namespace Global.Types
 {
 	public class GemQuantity : IEquatable<GemQuantity>
 	{
-		public int Emerald { get; set; }
 		public int Diamond { get; set; }
+		public int Emerald { get; set; }
 		public int Onyx { get; set; }
 		public int Ruby { get; set; }
 		public int Sapphire { get; set; }
