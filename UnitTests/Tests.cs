@@ -17,94 +17,96 @@ namespace UnitTests
 		[TestMethod]
 		public void TestDevelopmentCardEqualityOnFirstCard()
 		{
-			var card1 = Utils.ReadAllDevelopmentCards(pathToDataDir)[0];
-			var card2 = Utils.ReadAllDevelopmentCards(pathToDataDir)[0];
-			TestDevelopmentCardEquality(card1, card2);
+			var copy1OfCard0 = Utils.ReadAllDevelopmentCards(pathToDataDir)[0];
+			var copy2OfCard0 = Utils.ReadAllDevelopmentCards(pathToDataDir)[0];
+			Assert.IsTrue(copy1OfCard0.Equals(copy2OfCard0));
+
+			copy2OfCard0.Points++;
+			Assert.IsFalse(copy1OfCard0.Equals(copy2OfCard0));
+			copy2OfCard0.Points--;
+
+			copy2OfCard0.Price.Diamond++;
+			Assert.IsFalse(copy1OfCard0.Equals(copy2OfCard0));
+			copy2OfCard0.Price.Diamond--;
+
+			copy2OfCard0.Price.Emerald -= 2;
+			Assert.IsFalse(copy1OfCard0.Equals(copy2OfCard0));
+			copy2OfCard0.Price.Emerald += 2;
+
+			copy2OfCard0.Price.Onyx += 3;
+			Assert.IsFalse(copy1OfCard0.Equals(copy2OfCard0));
+			copy2OfCard0.Price.Onyx -= 3;
+
+			copy2OfCard0.Price.Ruby = copy1OfCard0.Price.Ruby + 3;
+			Assert.IsFalse(copy1OfCard0.Equals(copy2OfCard0));
+			copy2OfCard0.Price.Ruby = copy1OfCard0.Price.Ruby;
+
+			copy2OfCard0.Price.Sapphire++;
+			Assert.IsFalse(copy1OfCard0.Equals(copy2OfCard0));
+			copy2OfCard0.Price.Sapphire--;
+
+			copy1OfCard0.Level = DevelopmentLevel.Low;
+			copy2OfCard0.Level = DevelopmentLevel.Middle;
+			Assert.IsFalse(copy1OfCard0.Equals(copy2OfCard0));
+			copy2OfCard0.Level = DevelopmentLevel.Low;
+
+			copy1OfCard0.Gem = Gem.Onyx;
+			copy2OfCard0.Gem = Gem.Diamond;
+			Assert.IsFalse(copy1OfCard0.Equals(copy2OfCard0));
+			copy2OfCard0.Gem = Gem.Onyx;
+
+			Assert.IsTrue(copy1OfCard0.Equals(copy2OfCard0));
 		}
 
 		[TestMethod]
 		public void TestDevelopmentCardEqualityOnRandomCards()
 		{
-			var deck1 = Utils.ReadAllDevelopmentCards(pathToDataDir);
-			var deck2 = Utils.ReadAllDevelopmentCards(pathToDataDir);
-			Assert.IsTrue(deck1.Count == deck2.Count);
+			var deck = Utils.ReadAllDevelopmentCards(pathToDataDir);
 
-			var random = new Random();
-			for (int i = 0; i < 30; i++)
+			for (int i = 0; i < deck.Count; i++)
 			{
-				var indexOfRandomCard = random.Next(0, deck1.Count - 1);
-				TestDevelopmentCardEquality(deck1[indexOfRandomCard], deck2[indexOfRandomCard]);
+				(int index1, int index2) = GetRandomIndices(deck.Count);
+				Assert.IsFalse(deck[index1].Equals(deck[index2]));
 			}
 		}
 
-		/// <summary>
-		/// Verifies that the Equals method on the DevelopmentCard object work.
-		/// </summary>
-		/// <param name="card1">An instance of card x</param>
-		/// <param name="card2">An instance of card x</param>
-		public void TestDevelopmentCardEquality(DevelopmentCard card1, DevelopmentCard card2)
+		[TestMethod]
+		public void TestNobleEqualityOnFirstNoble()
 		{
-			Assert.IsTrue(card1.Equals(card2));
+			var copy1OfNoble0 = Utils.ReadAllNobles(pathToDataDir)[0];
+			var copy2OfNoble0 = Utils.ReadAllNobles(pathToDataDir)[0];
 
-			card2.Points++;
-			Assert.IsFalse(card1.Equals(card2));
-			card2.Points--;
+			Assert.IsTrue(copy1OfNoble0.Equals(copy2OfNoble0));
 
-			card2.Price.Diamond++;
-			Assert.IsFalse(card1.Equals(card2));
-			card2.Price.Diamond--;
+			copy2OfNoble0.Points++;
+			Assert.IsFalse(copy1OfNoble0.Equals(copy2OfNoble0));
+			copy2OfNoble0.Points--;
 
-			card2.Price.Emerald -= 2;
-			Assert.IsFalse(card1.Equals(card2));
-			card2.Price.Emerald += 2;
+			copy2OfNoble0.Price.Diamond++;
+			Assert.IsFalse(copy1OfNoble0.Equals(copy2OfNoble0));
+			copy2OfNoble0.Price.Diamond--;
 
-			card2.Price.Onyx += 3;
-			Assert.IsFalse(card1.Equals(card2));
-			card2.Price.Onyx -= 3;
-
-			card2.Price.Ruby = card1.Price.Ruby + 3;
-			Assert.IsFalse(card1.Equals(card2));
-			card2.Price.Ruby = card1.Price.Ruby;
-
-			card2.Price.Sapphire++;
-			Assert.IsFalse(card1.Equals(card2));
-			card2.Price.Sapphire--;
-
-			card1.Level = DevelopmentLevel.Low;
-			card2.Level = DevelopmentLevel.Middle;
-			Assert.IsFalse(card1.Equals(card2));
-			card2.Level = DevelopmentLevel.Low;
-
-			card1.Gem = Gem.Onyx;
-			card2.Gem = Gem.Diamond;
-			Assert.IsFalse(card1.Equals(card2));
-			card2.Gem = Gem.Onyx;
-
-			Assert.IsTrue(card1.Equals(card2));
+			Assert.IsTrue(copy1OfNoble0.Equals(copy2OfNoble0));
 		}
 
 		[TestMethod]
-		public void TestNobleEquality()
+		public void TestNoblesEqualityOnRandomNobles()
 		{
-			//var card1 = JsonConvert.DeserializeObject<DevelopmentCard>(File.ReadAllText(Path.Join(pathToDataDir, "SampleDevelopmentCard.json")));
-			//var list = new List<DevelopmentCard>
-			//{
-			//	card1, card1
-			//};
-			//File.WriteAllText(Path.Join(pathToDataDir, "list.json"), JsonConvert.SerializeObject(list, Formatting.Indented));
-			//var n = new Noble
-			//{
-			//	Points = 4,
-			//	Price = new GemQuantity
-			//	{
-			//		Diamond = 0,
-			//		Emerald = 3,
-			//		Onyx = 2,
-			//		Ruby = 1,
-			//		Sapphire = 2
-			//	}
-			//};
-			//string d = JsonConvert.SerializeObject(n, Formatting.Indented);
+			var deck = Utils.ReadAllNobles(pathToDataDir);
+
+			for (int i = 0; i < deck.Count; i++)
+			{
+				(int index1, int index2) = GetRandomIndices(deck.Count);
+				Assert.IsFalse(deck[index1].Equals(deck[index2]));
+			}
+		}
+
+		private (int, int) GetRandomIndices(int max)
+		{
+			var random = new Random();
+			var index1 = random.Next(0, max);
+			var index2 = (index1 + random.Next(1, max - 1)) % max;
+			return (index1, index2);
 		}
 
 		private string pathToDataDir = @"..\..\..\..\Global\Data";

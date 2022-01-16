@@ -10,7 +10,7 @@ namespace Global.Types
 		public int Points { get; set; }
 		public GemQuantity Price { get; set; }
 
-		public virtual bool Equals([AllowNull] Commoditiy other)
+		public bool Equals([AllowNull] Commoditiy other)
 		{
 			return
 				Points == other.Points &&

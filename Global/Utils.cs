@@ -15,5 +15,10 @@ namespace Global
 		{
 			return JsonConvert.DeserializeObject<List<DevelopmentCard>>(File.ReadAllText(Path.Join(relativePathToDataDirectory, "DevelopmentCards.json")));
 		}
+
+		public static List<Noble> ReadAllNobles(string relativePathToDataDirectory)
+		{
+			return JsonConvert.DeserializeObject<List<Noble>>(File.ReadAllText(Path.Join(relativePathToDataDirectory, "Nobles.json")));
+		}
 	}
 }

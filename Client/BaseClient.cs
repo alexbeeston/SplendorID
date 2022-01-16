@@ -13,7 +13,7 @@ using Global.Types;
 
 namespace Client
 {
-	public abstract class BaseClient : IdentifiedClient 
+	public abstract class BaseClient : AccessibleClient
 	{
 		public void Run()
 		{
