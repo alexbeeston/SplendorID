@@ -664,18 +664,6 @@
     "Gem": 1,
     "Points": 0,
     "Price": {
-      "Diamond": 0,
-      "Sapphire": 0,
-      "Emerald": 0,
-      "Ruby": 0,
-      "Onyx": 0
-    }
-  },
-  {
-    "Level": 0,
-    "Gem": 1,
-    "Points": 0,
-    "Price": {
       "Diamond": 1,
       "Sapphire": 0,
       "Emerald": 0,
