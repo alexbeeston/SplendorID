@@ -18,5 +18,12 @@ namespace Global.Types
 				Level == other.Level &&
 				Gem == other.Gem;
 		}
+
+		public DevelopmentCard Clone()
+		{
+			var clone = (DevelopmentCard)MemberwiseClone();
+			clone.Price = Price.Clone();
+			return clone;
+		}
 	}
 }

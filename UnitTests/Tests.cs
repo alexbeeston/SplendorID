@@ -4,6 +4,7 @@ using System.IO;
 
 using Newtonsoft.Json;
 
+using Global;
 using Global.Types;
 using System.Collections.Generic;
 
@@ -11,13 +12,38 @@ namespace UnitTests
 {
 
 	[TestClass]
-	public class UnitTest1
+	public class Tests
 	{
 		[TestMethod]
-		public void TestDevelopmentCardEquality()
+		public void TestDevelopmentCardEqualityOnFirstCard()
 		{
-			var card1 = JsonConvert.DeserializeObject<DevelopmentCard>(File.ReadAllText(Path.Join(pathToConfigsDir, "SampleDevelopmentCard.json")));
-			var card2 = JsonConvert.DeserializeObject<DevelopmentCard>(File.ReadAllText(Path.Join(pathToConfigsDir, "SampleDevelopmentCard.json")));
+			var card1 = Utils.ReadAllDevelopmentCards(pathToDataDir)[0];
+			var card2 = Utils.ReadAllDevelopmentCards(pathToDataDir)[0];
+			TestDevelopmentCardEquality(card1, card2);
+		}
+
+		[TestMethod]
+		public void TestDevelopmentCardEqualityOnRandomCards()
+		{
+			var deck1 = Utils.ReadAllDevelopmentCards(pathToDataDir);
+			var deck2 = Utils.ReadAllDevelopmentCards(pathToDataDir);
+			Assert.IsTrue(deck1.Count == deck2.Count);
+
+			var random = new Random();
+			for (int i = 0; i < 30; i++)
+			{
+				var indexOfRandomCard = random.Next(0, deck1.Count - 1);
+				TestDevelopmentCardEquality(deck1[indexOfRandomCard], deck2[indexOfRandomCard]);
+			}
+		}
+
+		/// <summary>
+		/// Verifies that the Equals method on the DevelopmentCard object work.
+		/// </summary>
+		/// <param name="card1">An instance of card x</param>
+		/// <param name="card2">An instance of card x</param>
+		public void TestDevelopmentCardEquality(DevelopmentCard card1, DevelopmentCard card2)
+		{
 			Assert.IsTrue(card1.Equals(card2));
 
 			card2.Points++;
@@ -60,12 +86,12 @@ namespace UnitTests
 		[TestMethod]
 		public void TestNobleEquality()
 		{
-			var card1 = JsonConvert.DeserializeObject<DevelopmentCard>(File.ReadAllText(Path.Join(pathToConfigsDir, "SampleDevelopmentCard.json")));
-			var list = new List<DevelopmentCard>
-			{
-				card1, card1
-			};
-			File.WriteAllText(Path.Join(pathToConfigsDir, "list.json"), JsonConvert.SerializeObject(list, Formatting.Indented));
+			//var card1 = JsonConvert.DeserializeObject<DevelopmentCard>(File.ReadAllText(Path.Join(pathToDataDir, "SampleDevelopmentCard.json")));
+			//var list = new List<DevelopmentCard>
+			//{
+			//	card1, card1
+			//};
+			//File.WriteAllText(Path.Join(pathToDataDir, "list.json"), JsonConvert.SerializeObject(list, Formatting.Indented));
 			//var n = new Noble
 			//{
 			//	Points = 4,
@@ -81,6 +107,6 @@ namespace UnitTests
 			//string d = JsonConvert.SerializeObject(n, Formatting.Indented);
 		}
 
-		private string pathToConfigsDir = @"..\..\..\Configs";
+		private string pathToDataDir = @"..\..\..\..\Global\Data";
 	}
 }

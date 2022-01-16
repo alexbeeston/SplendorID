@@ -22,5 +22,10 @@ namespace Global.Types
 				Ruby == other.Ruby &&
 				Sapphire == other.Sapphire;
 		}
+
+		public GemQuantity Clone()
+		{
+			return (GemQuantity)MemberwiseClone();
+		}
 	}
 }
