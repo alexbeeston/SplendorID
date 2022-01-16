@@ -1,0 +1,650 @@
+[
+  {
+    "Level": 2,
+    "Gem": 0,
+    "Points": 5,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 7
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 3,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 7,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 4,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 3,
+      "Ruby": 6,
+      "Onyx": 3
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 1,
+    "Points": 5,
+    "Price": {
+      "Diamond": 7,
+      "Sapphire": 3,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 7
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 2,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 7,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 2,
+    "Points": 5,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 7,
+      "Emerald": 3,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 4,
+    "Points": 5,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 7,
+      "Onyx": 3
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 3,
+    "Points": 3,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 5,
+      "Emerald": 3,
+      "Ruby": 0,
+      "Onyx": 3
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 4,
+    "Points": 3,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 3,
+      "Emerald": 5,
+      "Ruby": 3,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 4,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 7,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 3,
+    "Points": 5,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 7,
+      "Ruby": 3,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 3,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 3,
+      "Emerald": 6,
+      "Ruby": 3,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 1,
+    "Points": 4,
+    "Price": {
+      "Diamond": 6,
+      "Sapphire": 3,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 3
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 2,
+    "Points": 4,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 6,
+      "Emerald": 3,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 0,
+    "Points": 3,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 3,
+      "Emerald": 3,
+      "Ruby": 5,
+      "Onyx": 3
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 1,
+    "Points": 4,
+    "Price": {
+      "Diamond": 7,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 2,
+    "Points": 3,
+    "Price": {
+      "Diamond": 5,
+      "Sapphire": 3,
+      "Emerald": 3,
+      "Ruby": 0,
+      "Onyx": 3
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 1,
+    "Points": 3,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 0,
+      "Emerald": 3,
+      "Ruby": 3,
+      "Onyx": 5
+    }
+  },
+  {
+    "Level": 2,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 3,
+      "Onyx": 6
+    }
+  }, // end of level 2 cards
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Level": 1,
+    "Gem": 0,
+    "Points": 4,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+]

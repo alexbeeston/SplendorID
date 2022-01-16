@@ -5,6 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 
 using Global.Types;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
@@ -54,6 +55,30 @@ namespace UnitTests
 			card2.Gem = Gem.Onyx;
 
 			Assert.IsTrue(card1.Equals(card2));
+		}
+
+		[TestMethod]
+		public void TestNobleEquality()
+		{
+			var card1 = JsonConvert.DeserializeObject<DevelopmentCard>(File.ReadAllText(Path.Join(pathToConfigsDir, "SampleDevelopmentCard.json")));
+			var list = new List<DevelopmentCard>
+			{
+				card1, card1
+			};
+			File.WriteAllText(Path.Join(pathToConfigsDir, "list.json"), JsonConvert.SerializeObject(list, Formatting.Indented));
+			//var n = new Noble
+			//{
+			//	Points = 4,
+			//	Price = new GemQuantity
+			//	{
+			//		Diamond = 0,
+			//		Emerald = 3,
+			//		Onyx = 2,
+			//		Ruby = 1,
+			//		Sapphire = 2
+			//	}
+			//};
+			//string d = JsonConvert.SerializeObject(n, Formatting.Indented);
 		}
 
 		private string pathToConfigsDir = @"..\..\..\Configs";

@@ -6,11 +6,11 @@ namespace Global.Types
 {
 	public enum Gem
 	{
-		Emerald,
-		Sapphire,
-		Ruby,
-		Diamond,
-		Onyx
+		Diamond = 0,
+		Sapphire = 1,
+		Emerald = 2,
+		Ruby = 3,
+		Onyx = 4
 	}
 
 	public enum DevelopmentLevel
