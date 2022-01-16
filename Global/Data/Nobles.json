@@ -1,0 +1,82 @@
+[
+  {
+    "Points": 3,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 3,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 3
+    }
+  },
+  {
+    "Points": 3,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 3,
+      "Emerald": 3,
+      "Ruby": 3,
+      "Onyx": 0
+    }
+  },
+  {
+    "Points": 3,
+    "Price": {
+      "Diamond": 4,
+      "Sapphire": 4,
+      "Emerald": 0,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Points": 3,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 3,
+      "Emerald": 3,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Points": 3,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 4,
+      "Onyx": 4
+    }
+  },
+  {
+    "Points": 3,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 0,
+      "Emerald": 3,
+      "Ruby": 3,
+      "Onyx": 3
+    }
+  },
+  {
+    "Points": 3,
+    "Price": {
+      "Diamond": 0,
+      "Sapphire": 4,
+      "Emerald": 4,
+      "Ruby": 0,
+      "Onyx": 0
+    }
+  },
+  {
+    "Points": 3,
+    "Price": {
+      "Diamond": 3,
+      "Sapphire": 0,
+      "Emerald": 0,
+      "Ruby": 3,
+      "Onyx": 3
+    }
+  }
+]
