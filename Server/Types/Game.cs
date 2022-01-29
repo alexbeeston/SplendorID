@@ -94,21 +94,17 @@ namespace Server.Types
 		private void InitializeGameState()
 		{
 			var random = new Random();
-
 			var allCards = Utils.ReadAllDevelopmentCards(@"..\..\..\..\..\Global\Data");
 			FirstTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.Low).OrderBy(x => random.Next()).ToList();
 			SecondTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.Middle).OrderBy(x => random.Next()).ToList();
 			ThirdTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.High).OrderBy(x => random.Next()).ToList();
-
 			UnclaimedNobles = Utils.ReadAllNobles(@"..\..\..\..\..\Global\Data").OrderBy(x => random.Next()).ToList().GetRange(0, Clients.Count + 1);
-
 			GemQuantity = new GemQuantity(Clients.Count);
 			Wilds = 5;
-
 			Clients = Clients.OrderBy(x => random.Next()).ToList();
 		}
 
-		public void BeginPlay()
+		private void BeginPlay()
 		{
 			bool isLastTurn = false;
 			do

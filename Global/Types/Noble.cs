@@ -7,5 +7,6 @@ namespace Global.Types
 {
 	public class Noble : Commoditiy
 	{
+		public string Name { get; set; }
 	}
 }
