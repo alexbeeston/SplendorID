@@ -3,21 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 
+using Global;
 using Global.Messaging;
 using Global.Types;
 using Global.Messaging.Messages;
+using System.Threading.Tasks;
 
 namespace Server.Types
 {
 	public class Game
 	{
-		public List<AccessibleClient> Clients { get; set; }
-		public Game()
+		private List<AccessibleClient> Clients { get; set; }
+		private List<DevelopmentCard> FirstTierCards { get; set; }
+		private List<DevelopmentCard> SecondTierCards { get; set; }
+		private List<DevelopmentCard> ThirdTierCards { get; set; }
+		private List<Noble> UnclaimedNobles { get; set; }
+		private GemQuantity GemQuantity { get; set; }
+		private int Wilds { get; set; }
+		private readonly Socket Listener;
+
+		public Game(Socket listener)
 		{
 			Clients = new List<AccessibleClient>();
+			Listener = listener;
 		}
 
-		public void AddClient(Socket socket)
+		public void PlayGame(int numPlayers)
+		{
+			WaitForPlayersToJoin(numPlayers);
+			InitializeGameState();
+			BeginPlay();
+		}
+
+		public void WaitForPlayersToJoin(int numPlayers)
+		{
+			Task[] addClientTasks = new Task[numPlayers];
+			for (int i = 0; i < numPlayers; i++)
+			{
+				Socket socket = Listener.Accept();
+				addClientTasks[i] = Task.Run(() =>
+				{
+					AddClient(socket);
+				});
+			}
+			Task.WaitAll(addClientTasks);
+			if (Clients.Count != numPlayers)
+			{
+				throw new Exception("Did not add the expected number of players");
+			}
+		}
+
+		private void AddClient(Socket socket)
 		{
 			AccessibleClient client = null;
 			do
@@ -55,7 +91,24 @@ namespace Server.Types
 			});
 		}
 
-		public void PlayGame()
+		private void InitializeGameState()
+		{
+			var random = new Random();
+
+			var allCards = Utils.ReadAllDevelopmentCards(@"..\..\..\..\..\Global\Data");
+			FirstTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.Low).OrderBy(x => random.Next()).ToList();
+			SecondTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.Middle).OrderBy(x => random.Next()).ToList();
+			ThirdTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.High).OrderBy(x => random.Next()).ToList();
+
+			UnclaimedNobles = Utils.ReadAllNobles(@"..\..\..\..\..\Global\Data").OrderBy(x => random.Next()).ToList().GetRange(0, Clients.Count + 1);
+
+			GemQuantity = new GemQuantity(Clients.Count);
+			Wilds = 5;
+
+			Clients = Clients.OrderBy(x => random.Next()).ToList();
+		}
+
+		public void BeginPlay()
 		{
 			bool isLastTurn = false;
 			do

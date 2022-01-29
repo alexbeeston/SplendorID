@@ -23,6 +23,22 @@ namespace Global.Types
 				Sapphire == other.Sapphire;
 		}
 
+		public GemQuantity(int numPlayers)
+		{
+			var numTokens = numPlayers switch
+			{
+				2 => 4,
+				3 => 5,
+				4 => 7,
+				_ => throw new Exception("Only two, three, or four players may play Splendor"),
+			};
+			Diamond = numTokens;
+			Emerald = numTokens;
+			Onyx = numTokens;
+			Ruby = numTokens;
+			Sapphire = numTokens;
+		}
+
 		public GemQuantity Clone()
 		{
 			return (GemQuantity)MemberwiseClone();

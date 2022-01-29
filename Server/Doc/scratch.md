@@ -1,11 +1,5 @@
 ﻿public void PlayGame()
 {
-	Clients.ShuffleOrder();
-	// draw n + 1 nobles
-	// load each tier of mines into memory
-	// shuffle each tier
-	// draw top four
-	// initialize bank
 	while (!isLastTurn)
 	{
 		foreach (var client in Client)
