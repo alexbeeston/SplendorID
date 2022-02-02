@@ -93,12 +93,13 @@ namespace Server.Types
 
 		private void InitializeGameState()
 		{
+			var pathToDataDir = @"..\..\..\..\Global\Data";
 			var random = new Random();
-			var allCards = Utils.ReadAllDevelopmentCards(@"..\..\..\..\..\Global\Data");
+			var allCards = Utils.ReadAllDevelopmentCards(pathToDataDir);
 			FirstTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.Low).OrderBy(x => random.Next()).ToList();
 			SecondTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.Middle).OrderBy(x => random.Next()).ToList();
 			ThirdTierCards = allCards.FindAll(x => x.Level == DevelopmentLevel.High).OrderBy(x => random.Next()).ToList();
-			UnclaimedNobles = Utils.ReadAllNobles(@"..\..\..\..\..\Global\Data").OrderBy(x => random.Next()).ToList().GetRange(0, Clients.Count + 1);
+			UnclaimedNobles = Utils.ReadAllNobles(pathToDataDir).OrderBy(x => random.Next()).ToList().GetRange(0, Clients.Count + 1);
 			GemQuantity = new GemQuantity(Clients.Count);
 			Wilds = 5;
 			Clients = Clients.OrderBy(x => random.Next()).ToList();
@@ -106,6 +107,7 @@ namespace Server.Types
 
 		private void BeginPlay()
 		{
+			ToVisibleGameState().Print();
 			bool isLastTurn = false;
 			do
 			{
@@ -120,6 +122,26 @@ namespace Server.Types
 				}
 
 			} while (!isLastTurn);
+		}
+
+		private VisibleGameState ToVisibleGameState()
+		{
+			return new VisibleGameState
+			{
+				ClientStates = null,
+				FirstTierCards = GetTopFourCards(FirstTierCards),
+				SecondTierCards = GetTopFourCards(SecondTierCards),
+				ThirdTierCards = GetTopFourCards(ThirdTierCards),
+				UnclaimedNobles = UnclaimedNobles,
+				AvailableGems = GemQuantity,
+				AvailableWilds = Wilds,
+			};
+		}
+
+		private List<DevelopmentCard> GetTopFourCards(List<DevelopmentCard> deck)
+		{
+			var numCardsToShow = deck.Count > 4 ? 4 : deck.Count;
+			return deck.GetRange(0, numCardsToShow - 1);
 		}
 	}
 }
