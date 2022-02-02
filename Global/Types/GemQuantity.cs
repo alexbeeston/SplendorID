@@ -23,6 +23,11 @@ namespace Global.Types
 				Sapphire == other.Sapphire;
 		}
 
+		/// <summary>
+		/// Constructor used for Newton soft
+		/// </summary>
+		public GemQuantity() { }
+
 		public GemQuantity(int numPlayers)
 		{
 			var numTokens = numPlayers switch

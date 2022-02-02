@@ -16,28 +16,56 @@ namespace Global.Types
 
 		public void Print()
 		{
-			Console.WriteLine("Nobles".PadLeft(3).PadRight(3));
+			PrintNobles();
+			Console.WriteLine();
+			PrintGems();
+		}
+
+		private void PrintNobles()
+		{
+			Console.WriteLine("Unclaimed nobles");
 			const int numColumns = 7;
-			var basicTable = new TextTable(numColumns);
-			basicTable.AddCell(string.Empty);
-			basicTable.AddCell("Points");
-			basicTable.AddCell("Diamond");
-			basicTable.AddCell("Emerald");
-			basicTable.AddCell("Onyx");
-			basicTable.AddCell("Ruby");
-			basicTable.AddCell("Sapphire");
+			var table = new TextTable(numColumns);
+			table.AddCell(string.Empty);
+			table.AddCell("Points");
+			AddGemHeadings(table);
 			
 			foreach (var noble in UnclaimedNobles)
 			{
-				basicTable.AddCell(noble.Name);
-				basicTable.AddCell(GetString(noble.Points));
-				basicTable.AddCell(GetString(noble.Price.Diamond));
-				basicTable.AddCell(GetString(noble.Price.Emerald));
-				basicTable.AddCell(GetString(noble.Price.Onyx));
-				basicTable.AddCell(GetString(noble.Price.Ruby));
-				basicTable.AddCell(GetString(noble.Price.Sapphire));
+				table.AddCell(noble.Name);
+				table.AddCell(GetString(noble.Points));
+				table.AddCell(GetString(noble.Price.Diamond));
+				table.AddCell(GetString(noble.Price.Emerald));
+				table.AddCell(GetString(noble.Price.Onyx));
+				table.AddCell(GetString(noble.Price.Ruby));
+				table.AddCell(GetString(noble.Price.Sapphire));
 			}
-			Console.WriteLine(basicTable.Render());
+			Console.WriteLine(table.Render());
+		}
+
+		private void PrintGems()
+		{
+			Console.WriteLine("Available Gems");
+			const int numColumns = 6;
+			var table = new TextTable(numColumns);
+			table.AddCell("Wild");
+			AddGemHeadings(table);
+			table.AddCell(GetString(AvailableWilds));
+			table.AddCell(GetString(AvailableGems.Diamond));
+			table.AddCell(GetString(AvailableGems.Emerald));
+			table.AddCell(GetString(AvailableGems.Onyx));
+			table.AddCell(GetString(AvailableGems.Ruby));
+			table.AddCell(GetString(AvailableGems.Sapphire));
+			Console.WriteLine(table.Render());
+		}
+
+		private void AddGemHeadings(TextTable table)
+		{
+			table.AddCell("Diamond");
+			table.AddCell("Emerald");
+			table.AddCell("Onyx");
+			table.AddCell("Ruby");
+			table.AddCell("Sapphire");
 		}
 
 		public static string GetString(int number)
