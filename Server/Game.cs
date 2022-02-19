@@ -9,7 +9,7 @@ using Global.Types;
 using Global.Messaging.Messages;
 using System.Threading.Tasks;
 
-namespace Server.Types
+namespace Server
 {
 	public class Game
 	{
@@ -37,6 +37,7 @@ namespace Server.Types
 
 		public void WaitForPlayersToJoin(int numPlayers)
 		{
+			Console.WriteLine("Server: waiting for players to join...");
 			Task[] addClientTasks = new Task[numPlayers];
 			for (int i = 0; i < numPlayers; i++)
 			{
@@ -49,7 +50,7 @@ namespace Server.Types
 			Task.WaitAll(addClientTasks);
 			if (Clients.Count != numPlayers)
 			{
-				throw new Exception("Did not add the expected number of players");
+				throw new Exception("Server: did not add the expected number of players");
 			}
 		}
 
@@ -83,7 +84,7 @@ namespace Server.Types
 				}
 			} while (client == null);
 
-			Console.WriteLine($"Just added {client.UserName}");
+			Console.WriteLine($"Server: just added {client.UserName}");
 
 			MessagingUtils.SendMessage(socket, new RegisterNewClientResponse
 			{

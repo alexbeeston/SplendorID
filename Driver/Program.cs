@@ -1,35 +1,27 @@
-﻿using System;
+﻿using Client;
+using System;
 using System.Net;
 using System.Net.Sockets;
-
-using Server.Types;
-using Global;
+using System.Threading;
 using System.Threading.Tasks;
+using Server;
 
-namespace Server
+namespace Driver
 {
-	class ServerMain
+	class Program
 	{
 		static void Main(string[] args)
 		{
-			try
-			{
-				ActualMain();
-				Console.WriteLine("End of Main");
-				Console.ReadLine();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-				Console.ReadLine();
-			}
-		}
-
-		static void ActualMain()
-		{
-			const int NUM_PLAYERS = 4; // TODO: read from dotnet configuration app file
+			const int NUM_PLAYERS = 2; // TODO: read from configuration file
 			Game game = new Game(GetListener());
-			game.PlayGame(NUM_PLAYERS);
+			Task.Run(() => game.PlayGame(NUM_PLAYERS));
+
+			for (int i = 0; i < NUM_PLAYERS; i++)
+			{
+				var bot = new BotClient();
+				Task.Run(() => bot.Run());
+				Thread.Sleep(1500);
+			}
 		}
 
 		static Socket GetListener()

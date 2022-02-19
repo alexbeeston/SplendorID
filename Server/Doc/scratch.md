@@ -1,19 +1,5 @@
-﻿public void PlayGame()
-{
-	while (!isLastTurn)
-	{
-		foreach (var client in Client)
-		{
-			S: ask for client state (GetClientStateRequest)
-			C: give their state (GetClientStateResponse)
-			-> Server validates that the client state is correct
-			S: give game state (GetTurnChoiceRequest)
-			C: give server their choice (GetTurnChoiceResponse)
-			-> Server updates the client and game state
-			-> isLastTurn = client.Points >= 15
-		}
-	}
-}
+﻿With a driver project, I can control how many clients get spun up much easier than dealing with batch files, and I can write stats to databse
+With batch file, I can see everything in a separate window, which should make it easier to debug. But, with break points and clear labels, I could see it.
 
 
 // next iteration: server writes game play down to a database, bash/batch script plays lots of games, then another program can process the datao

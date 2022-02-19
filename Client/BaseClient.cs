@@ -20,7 +20,6 @@ namespace Client
 			SetSocket();
 			RegisterWithServer();
 			GreetClient();
-			Console.WriteLine("End of Main");
 			Console.ReadLine();
 		}
 
@@ -54,6 +53,7 @@ namespace Client
 
 			UserName = userName;
 			ClientId = response.ClientId;
+			Console.WriteLine($"{UserName}: Just connected to server");
 		}
 
 		// Abstract Methods
